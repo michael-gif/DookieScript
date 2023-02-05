@@ -1,0 +1,129 @@
+===GENERAL INFO===
+language name: 'shit'
+every statement must end with a ';'.
+code blocks start and end with a curly bracket.
+
+===COMMENTS===
+// comment
+/*
+Multi-line
+comment
+*/
+
+===DATA TYPES===
+int
+float
+string
+boolean
+
+===OPERATORS===
+add/concat -> +
+subtract -> -
+multiply -> *
+divide -> /
+remainder -> //
+modulo -> %
+
+===DATA STRUCTURES===
+array -> multipart
+immutable array -> static multipart
+set -> set
+hashmap -> keyset
+
+===VARIABLES===
+container <int> age = 7;
+container <string> name = "foo";
+
+===ARRAYS===
+multipart <string> names = {"john", "doe"};
+multipart <int> ages = {7, 8};
+
+===IMMUTABLES===
+static container <int> age = 7;
+static multipart <string> names = {"john", "doe"};
+
+===CONDITIONAL FLOW===
+query (condition) executes {
+    // logic
+}
+
+query (condition) executes {
+    // logic
+} otherwise {
+    // logic
+}
+
+query (condition) executes {
+    // logic
+} otherwise query (condition2) executes {
+    // logic
+} otherwise {
+    // logic
+}
+
+===REPETITIVE FLOW===
+repeat (<int> start, <int> stop, <int> index) {
+    // logic
+}
+
+repeat query (condition) {
+    // logic
+}
+
+===FUNCTIONS===
+'''
+    Docstring here
+'''
+reusable function1(<int> num1, <int> num2) returns <boolean> {
+    return true;
+}
+call function1(1, 2);
+
+===EXAMPLE CODE===
+// computer picks random number from 1 to 10, player picks random number from 1 to 10, whoever picked highest wins.
+
+'''
+Get the computer's number using a random number generator.
+'''
+reusable getComputerNumber() returns <int> {
+    return call random.int(1, 10);
+}
+
+'''
+Get the player's number using input. Make sure the input is a number between 1 and 10.
+'''
+reusable getPlayerNumber() returns <int> {
+    repeat query (true) {
+        static container <int> playerNumber << "Enter a number from 1 to 10";
+        query (1 <= playerNumber <= 10) executes {
+            return playerNumber;
+        } otherwise {
+            print("Number must be from 1 to 10");
+        }
+    }
+}
+
+'''
+Game logic.
+If both numbers are equal, it is a draw.
+If the computer's number is higher, computer wins.
+If the player's number is higher, player wins.
+'''
+reusable main() return void {
+    static container <string> computerNumber = call getComputerNumber();
+    static container <string> playerNumber = call getPlayerNumber();
+    query (computerNumber == playerNumber) executes {
+        print("Draw");
+        return;
+    }
+    query (computerNumber > playerNumber) executes {
+        print("Computer wins");
+        return;
+    }
+    query (computerNumber <= playerNumber) executes {
+        print("Player wins");
+        return;
+    }
+}
+
+call main()
