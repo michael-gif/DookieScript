@@ -148,6 +148,6 @@ call main()
 ```
 
 Then run main.py, giving it the filename as the first argument:
-`python -m main.py numbergame.dds`
+`python -m main.py -dds numbergame.dds`
 
 The doodoo file will be tokenized, converted to python, and run.
