@@ -96,7 +96,7 @@ this is a multiline comment
 ## Usage
 Write your doodoo file, saving it with `.dds` as the extension. Example:
 
-`numbergame.dd`
+`numbergame.dds`
 ```
 // computer picks random number from 1 to 10, player picks random number from 1 to 10, whoever picked highest wins.
 
