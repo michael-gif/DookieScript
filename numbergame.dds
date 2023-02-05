@@ -3,7 +3,7 @@
 '''
 Get the computer's number using a random number generator.
 '''
-reusable getComputerNumber(<int> a, <int> b) returns <int> {
+reusable getComputerNumber() returns <int> {
     return call random.int(1, 10);
 }
 

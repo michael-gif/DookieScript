@@ -1,3 +1,5 @@
+import argparse
+
 from typing import Tuple, List
 from token import Token
 
@@ -133,7 +135,7 @@ def value_parser(raw_text: str) -> Token:
     """
     if raw_text.startswith('"') and raw_text.endswith('"'):
         token = Token("string")
-        token.attributes["value"] = raw_text[1:-1]
+        token.attributes["value"] = f'"{raw_text[1:-1]}"\n'
         return token
     if raw_text in ["true", "false"]:
         token = Token("boolean")
@@ -313,7 +315,11 @@ def tokenize(content: str) -> List[Token]:
     return tokens
 
 
-with open('numbergame.dds') as f:
+parser = argparse.ArgumentParser()
+parser.add_argument('-dds', '--dds_file', required=True)
+args = vars(parser.parse_args())
+
+with open(args['dds_file']) as f:
     content = f.read()
 tokens = tokenize(content)
 for t in tokens:
@@ -321,4 +327,4 @@ for t in tokens:
 
 print()
 from converter import convert2py
-convert2py(tokens)
+convert2py(tokens, args['dds_file'].split('.dds')[0] + ".py")

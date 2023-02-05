@@ -1,16 +1,22 @@
+import subprocess
+
 from typing import List
 from token import Token
 
 
-def convert2py(tokens: List[Token]) -> str:
+def convert2py(tokens: List[Token], destination: str) -> str:
     """
     | Convert a tree of tokens into python code
     :param tokens:
     :return:
     """
-    destination = "numbergame.py"
-    for t in tokens:
-        print(convert_token(t))
+    print("[INFO] Translating doodooscript into python")
+    python_code = [convert_token(t) for t in tokens]
+    with open(destination, 'w') as f:
+        for code in python_code:
+            f.write(code)
+    print("[INFO] Executing python code")
+    subprocess.call(["python", "-m", destination.split('.py')[0]], shell=True)
 
 
 def convert_token(token: Token) -> str:
@@ -49,8 +55,8 @@ def convert_function(token: Token) -> str:
         python_code = [convert_token(t) for t in function_body]
         code_block = '\n'.join(["    " + code for code in python_code])
     else:
-        code_block = "    pass"
-    return declaration + "\n" + code_block
+        code_block = "    pass\n"
+    return declaration + "\n" + code_block + "\n"
 
 
 def convert_variable(token: Token) -> str:
