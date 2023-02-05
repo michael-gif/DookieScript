@@ -1,4 +1,4 @@
-# DooDooLanguage
+# DooDooScript
 My own programming language
 
 ### Available datatypes
@@ -94,7 +94,7 @@ this is a multiline comment
 ```
 
 ## Usage
-Write your doodoo file, saving it with `.dd` as the extension. Example:
+Write your doodoo file, saving it with `.dds` as the extension. Example:
 
 `numbergame.dd`
 ```
@@ -148,6 +148,6 @@ call main()
 ```
 
 Then run main.py, giving it the filename as the first argument:
-`python -m main.py numbergame.dd`
+`python -m main.py numbergame.dds`
 
 The doodoo file will be tokenized, converted to python, and run.
