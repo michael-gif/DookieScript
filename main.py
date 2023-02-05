@@ -320,6 +320,9 @@ parser.add_argument('-dds', '--dds_file', required=True)
 args = vars(parser.parse_args())
 
 dds_file = args['dds_file']
+if not dds_file.endswith(".dds"):
+    print(f"[ERROR] The specified file '{dds_file}' is not a doodooscript file")
+    quit()
 
 try:
     with open(args['dds_file']) as f:
