@@ -321,9 +321,6 @@ args = vars(parser.parse_args())
 with open(args['dds_file']) as f:
     content = f.read()
 tokens = tokenize(content)
-for t in tokens:
-    t.info()
 
-print()
 from converter import convert2py
 convert2py(tokens, args['dds_file'].split('.dds')[0] + ".py")
