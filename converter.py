@@ -16,7 +16,7 @@ def convert2py(tokens: List[Token], destination: str) -> str:
         for code in python_code:
             f.write(code)
     print("[INFO] Executing python code\n")
-    subprocess.call(["python", "-m", destination.split('.py')[0]], shell=True)
+    subprocess.call(["python", "-m", destination[:-3]], shell=True)
 
 
 def convert_token(token: Token) -> str:

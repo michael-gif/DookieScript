@@ -2,6 +2,7 @@ import argparse
 
 from typing import Tuple, List
 from token import Token
+from converter import convert2py
 
 
 def function_parser(raw_text: str) -> Tuple[str, Token]:
@@ -318,9 +319,12 @@ parser = argparse.ArgumentParser()
 parser.add_argument('-dds', '--dds_file', required=True)
 args = vars(parser.parse_args())
 
-with open(args['dds_file']) as f:
-    content = f.read()
-tokens = tokenize(content)
+dds_file = args['dds_file']
 
-from converter import convert2py
-convert2py(tokens, args['dds_file'].split('.dds')[0] + ".py")
+try:
+    with open(args['dds_file']) as f:
+        content = f.read()
+    tokens = tokenize(content)
+    convert2py(tokens, dds_file[:-4] + ".py")
+except FileNotFoundError:
+    print(f"[INFO] Could not find dds file '{dds_file}'")

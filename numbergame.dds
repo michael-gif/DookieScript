@@ -30,6 +30,7 @@ If the player's number is higher, player wins.
 reusable main() return void {
     static container <string> computerNumber = call getComputerNumber();
     static container <string> playerNumber = call getPlayerNumber();
+    call print("test");
     query (computerNumber == playerNumber) executes {
         print("Draw");
         return;
@@ -42,7 +43,6 @@ reusable main() return void {
         print("Player wins");
         return;
     }
-    call print("test");
 }
 
 call main()
