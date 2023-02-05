@@ -1,5 +1,5 @@
 ===GENERAL INFO===
-language name: 'shit'
+language name: 'poop'
 every statement must end with a ';'.
 code blocks start and end with a curly bracket.
 

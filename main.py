@@ -313,7 +313,7 @@ def tokenize(content: str) -> List[Token]:
     return tokens
 
 
-with open('numbergame.shit') as f:
+with open('numbergame.dd') as f:
     content = f.read()
 tokens = tokenize(content)
 for t in tokens:
