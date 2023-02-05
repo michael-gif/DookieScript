@@ -42,6 +42,7 @@ reusable main() return void {
         print("Player wins");
         return;
     }
+    call print("test");
 }
 
 call main()

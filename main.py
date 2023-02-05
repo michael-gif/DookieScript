@@ -74,8 +74,7 @@ def call_parser(raw_text: str) -> Tuple[str, Token]:
                 break
             params = [p.strip() for p in params_string.split(" ")]
             for param in params:
-                param_type, param_name = param.split(" ")
-                attribs["parameters"] = (param_name, param_type)
+                attribs["parameters"].append(param)
             break
         index += 1
 

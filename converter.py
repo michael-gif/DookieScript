@@ -76,6 +76,5 @@ def convert_call(token: Token) -> str:
     :return:
     """
     parameters = token.attributes["parameters"]
-    parameters_string = [p_name for p_name, p_type in parameters]
-    function_call = f"{token.attributes['function_name']}({','.join(parameters_string)})"
+    function_call = f"{token.attributes['function_name']}({','.join(parameters)})\n"
     return function_call
