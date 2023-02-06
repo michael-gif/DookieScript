@@ -136,6 +136,12 @@ def query_parser(raw_text: str) -> Tuple[str, Token]:
             attribs["code_block"] = code_block
             break
         index += 1
+
+    result = tokenize(attribs["code_block"])
+    if result:
+        attribs["code_block"] = result
+    else:
+        attribs["code_block"] = [attribs["code_block"]]
     token.attributes = attribs
     remaining_text = raw_text[index + 1:]
     return remaining_text, token

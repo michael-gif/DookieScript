@@ -19,8 +19,8 @@ def convert2py(tokens: List[Token], destination: str) -> str:
             python_string = '\n'.join(code)
             f.write(python_string + "\n")
     print("[INFO] Executing python code\n")
-    subprocess.call(["python", "-m", destination[:-3]], shell=True)
-    os.remove(destination)
+    #subprocess.call(["python", "-m", destination[:-3]], shell=True)
+    #os.remove(destination)
 
 
 def convert_token(token: Token) -> list:
@@ -38,6 +38,8 @@ def convert_token(token: Token) -> list:
         python_strings += convert_call(token)
     if token.name == "repeat_query":
         python_strings += convert_while(token)
+    if token.name == "query":
+        python_strings += convert_query(token)
     if token.name in ["string", "int", "float", "boolean", "shit"]:
         python_strings += [token.attributes["value"]]
     return python_strings
@@ -94,9 +96,31 @@ def convert_call(token: Token) -> list[str]:
 
 
 def convert_while(token: Token) -> list[str | Any]:
+    """
+    | Convert a while loop into python code
+    :param token:
+    :return:
+    """
     if token.attributes["condition"] in ["true", "false"]:
         token.attributes["condition"] = token.attributes["condition"].capitalize()
     lines = ["while " + token.attributes["condition"] + ":"]
     for t in token.attributes["code_block"]:
         lines += ["    " + line for line in convert_token(t)]
+    return lines
+
+
+def convert_query(token: Token) -> list[str | Any]:
+    """
+    | Convert an if statement into python code
+    :param token:
+    :return:
+    """
+    if token.attributes["condition"] in ["true", "false"]:
+        token.attributes["condition"] = token.attributes["condition"].capitalize()
+    lines = ["if " + token.attributes["condition"] + ":"]
+    for t in token.attributes["code_block"]:
+        if type(t) != Token:
+            lines.append("    " + t)
+        else:
+            lines += ["    " + line for line in convert_token(t)]
     return lines
