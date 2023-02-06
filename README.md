@@ -9,9 +9,9 @@ My own programming language
 
 ### Available datastructures
 - array
-- immutable array
-- set
-- hashmap
+- immutable array (not implemented)
+- set (not implemented)
+- hashmap (not implemented)
 
 ### Operators
 - add/concat -> +
