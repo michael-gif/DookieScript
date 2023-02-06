@@ -1,7 +1,7 @@
 import subprocess
 import os
 
-from typing import List
+from typing import List, Any
 from token import Token
 
 
@@ -13,15 +13,17 @@ def convert2py(tokens: List[Token], destination: str) -> str:
     """
     print("[INFO] Translating doodooscript into python")
     python_code = [convert_token(t) for t in tokens]
+    print(python_code)
     with open(destination, 'w') as f:
         for code in python_code:
-            f.write(code)
+            python_string = '\n'.join(code)
+            f.write(python_string + "\n")
     print("[INFO] Executing python code\n")
     subprocess.call(["python", "-m", destination[:-3]], shell=True)
     os.remove(destination)
 
 
-def convert_token(token: Token) -> str:
+def convert_token(token: Token) -> list:
     """
     | Identify what the token type is, then use the relevant converter
     :param token:
@@ -29,54 +31,72 @@ def convert_token(token: Token) -> str:
     """
     python_strings = []
     if token.name == "reusable":
-        python_strings.append(convert_function(token))
+        python_strings += convert_function(token)
     if token.name == "container":
-        python_strings.append(convert_variable(token))
+        python_strings += convert_variable(token)
     if token.name == "call":
-        python_strings.append(convert_call(token))
+        python_strings += convert_call(token)
+    if token.name == "repeat_query":
+        python_strings += convert_while(token)
     if token.name in ["string", "int", "float", "boolean", "shit"]:
-        python_strings.append(token.attributes["value"])
-    return '\n'.join(python_strings)
+        python_strings += [token.attributes["value"]]
+    return python_strings
 
 
-def convert_function(token: Token) -> str:
+def convert_function(token: Token) -> list[str]:
     """
     | Convert a function into it's definition and code block
     :param token:
     :return:
     """
+    lines = []
     declaration = ""
     function_name = token.attributes["function_name"]
     declaration += "def " + function_name + "("
     parameters = token.attributes["parameters"]
     parameters_string = [p_name for p_name, p_type in parameters]
     declaration += ', '.join(parameters_string) + "):"
+    lines.append(declaration)
 
     function_body = token.attributes["code_block"]
+    code_block = []
     if function_body:
-        python_code = [convert_token(t) for t in function_body]
-        code_block = '\n'.join(["    " + code for code in python_code])
+        for t in function_body:
+            python_lines = convert_token(t)
+            for line in python_lines:
+                code_block.append("    " + line)
     else:
-        code_block = "    pass\n"
-    return declaration + "\n" + code_block + "\n"
+        code_block.append("    pass")
+    lines += code_block
+    lines += ["", ""]
+    return lines
 
 
-def convert_variable(token: Token) -> str:
+def convert_variable(token: Token) -> list:
     """
     | Convert variable name and value into a python variable
     :param token:
     :return:
     """
-    python_string = token.attributes["variable_name"] + " = " + convert_token(token.attributes["variable_value"])
-    return python_string
+    python_string = token.attributes["variable_name"] + " = " + convert_token(token.attributes["variable_value"])[0]
+    return [python_string]
 
 
-def convert_call(token: Token) -> str:
+def convert_call(token: Token) -> list[str]:
     """
     | Convert a function call into python code
     :param token:
     :return:
     """
     parameters = token.attributes["parameters"]
-    function_call = f"{token.attributes['function_name']}({','.join(parameters)})\n"
-    return function_call
+    function_call = f"{token.attributes['function_name']}({','.join(parameters)})"
+    return [function_call]
+
+
+def convert_while(token: Token) -> list[str | Any]:
+    if token.attributes["condition"] in ["true", "false"]:
+        token.attributes["condition"] = token.attributes["condition"].capitalize()
+    lines = ["while " + token.attributes["condition"] + ":"]
+    for t in token.attributes["code_block"]:
+        lines += ["    " + line for line in convert_token(t)]
+    return lines

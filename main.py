@@ -11,15 +11,21 @@ def function_parser(raw_text: str) -> Tuple[str, Token]:
     :param raw_text:
     :return:
     """
+    if raw_text.lstrip().startswith("reusable "):
+        raw_text = raw_text.lstrip().split("reusable ", 1)[1]
+    else:
+        return "", None
     token = Token("reusable")
     attribs = {}
     index = 0
     scanned = ""
+    bracket_counter = 0
+    found_code_block = False
     while index < len(raw_text):
         char = raw_text[index]
         scanned += char
         if scanned.endswith("(") and not "function_name" in attribs:
-            attribs["function_name"] = scanned.split("reusable ")[1][:-1]
+            attribs["function_name"] = scanned[:-1]
             scanned = ""
         if scanned.endswith(")") and not "parameters" in attribs:
             attribs["parameters"] = []
@@ -33,11 +39,16 @@ def function_parser(raw_text: str) -> Tuple[str, Token]:
                 param_type, param_name = param.split(" ")
                 attribs["parameters"].append((param_name, param_type))
             scanned = ""
-        if scanned.endswith("{") and not "return_type" in attribs:
-            return_type = scanned.strip().split(" ")[1]
-            attribs["return_type"] = return_type
-            scanned = ""
-        if scanned.endswith("}") and not "code_block" in attribs:
+        if scanned.endswith("{"):
+            if "return_type" not in attribs:
+                return_type = scanned.strip().split(" ")[1]
+                attribs["return_type"] = return_type
+                scanned = ""
+            found_code_block = True
+            bracket_counter += 1
+        if scanned.endswith("}"):
+            bracket_counter -= 1
+        if found_code_block and not bracket_counter and not "code_block" in attribs:
             code_block = scanned[:-1].lstrip().rstrip()
             attribs["code_block"] = code_block
             break
@@ -56,6 +67,10 @@ def call_parser(raw_text: str) -> Tuple[str, Token]:
     :param raw_text:
     :return:
     """
+    if raw_text.lstrip().startswith("call "):
+        raw_text = raw_text.lstrip().split("call ", 1)[1]
+    else:
+        return "", None
     token = Token("call")
     attribs = {}
     index = 0
@@ -64,7 +79,7 @@ def call_parser(raw_text: str) -> Tuple[str, Token]:
         char = raw_text[index]
         scanned += char
         if scanned.endswith("("):
-            function_name = scanned[:-1].strip().split("call ")[1]
+            function_name = scanned[:-1].strip()
             attribs["function_name"] = function_name
             scanned = ""
         if scanned.endswith(")"):
@@ -82,6 +97,118 @@ def call_parser(raw_text: str) -> Tuple[str, Token]:
     token.attributes = attribs
     remaining_text = raw_text[index + 1:]
     return remaining_text, token
+
+
+def query_parser(raw_text: str) -> Tuple[str, Token]:
+    """
+    | Parses if statements
+    :param raw_text:
+    :return:
+    """
+    if raw_text.lstrip().startswith("query "):
+        raw_text = raw_text.lstrip().split("query ", 1)[1]
+    else:
+        return "", None
+    token = Token("query")
+    attribs = {}
+    index = 0
+    scanned = ""
+    found_code_block = False
+    bracket_counter = 0
+    while index < len(raw_text):
+        char = raw_text[index]
+        scanned += char
+        scanned = scanned.lstrip()
+        if scanned.endswith(")") and not "condition" in attribs:
+            condition = scanned[1:-1]
+            attribs["condition"] = condition
+            scanned = ""
+        if scanned.endswith("executes {"):
+            scanned = ""
+            found_code_block = True
+            bracket_counter += 1
+        if scanned.endswith("{"):
+            bracket_counter += 1
+        if scanned.endswith("}"):
+            bracket_counter -= 1
+        if found_code_block and not bracket_counter:
+            code_block = scanned[:-1]
+            attribs["code_block"] = code_block
+            break
+        index += 1
+    token.attributes = attribs
+    remaining_text = raw_text[index + 1:]
+    return remaining_text, token
+
+
+def repeat_query_parser(raw_text: str) -> Tuple[str, Token]:
+    """
+    | Parses while loops
+    :param raw_text:
+    :return:
+    """
+    if raw_text.lstrip().startswith("repeat query "):
+        raw_text = raw_text.lstrip().split("query ", 1)[1]
+    else:
+        return "", None
+    token = Token("repeat_query")
+    attribs = {}
+    index = 0
+    scanned = ""
+    found_code_block = False
+    bracket_counter = 0
+    while index < len(raw_text):
+        char = raw_text[index]
+        scanned += char
+        scanned = scanned.lstrip()
+        if scanned.startswith("(") and scanned.endswith(")") and not "condition" in attribs:
+            condition = scanned[1:-1]
+            attribs["condition"] = condition
+            scanned = ""
+        if scanned.endswith("{"):
+            bracket_counter += 1
+            found_code_block = True
+        if scanned.endswith("}"):
+            bracket_counter -= 1
+        if found_code_block and not bracket_counter:
+            code_block = scanned[:-1]
+            attribs["code_block"] = code_block
+            break
+        index += 1
+
+    attribs["code_block"] = tokenize(attribs["code_block"])
+    token.attributes = attribs
+    remaining_text = raw_text[index + 1:]
+    return remaining_text, token
+
+
+def value_parser(raw_text: str) -> Token:
+    """
+    | Parses variable values
+    :param raw_text:
+    :return:
+    """
+    if raw_text.startswith('"') and raw_text.endswith('"'):
+        token = Token("string")
+        token.attributes["value"] = f'"{raw_text[1:-1]}"'
+        return token
+    if raw_text in ["true", "false"]:
+        token = Token("boolean")
+        token.attributes["value"] = raw_text
+        return token
+    if raw_text.startswith("call "):
+        text, token = call_parser(raw_text)
+        return token
+    try:
+        int(raw_text)
+        token = Token("int")
+        token.attributes["value"] = raw_text
+        return token
+    except ValueError:
+        float(raw_text)
+        token = Token("float")
+        token.attributes["value"] = raw_text
+        return token
 
 
 def container_parser(raw_text: str) -> Tuple[str, Token]:
@@ -125,36 +252,6 @@ def container_parser(raw_text: str) -> Tuple[str, Token]:
     token.attributes = attribs
     remaining_text = raw_text[index + 1:]
     return remaining_text, token
-
-
-def value_parser(raw_text: str) -> Token:
-    """
-    | Parses variable values
-    :param raw_text:
-    :return:
-    """
-    if raw_text.startswith('"') and raw_text.endswith('"'):
-        token = Token("string")
-        token.attributes["value"] = f'"{raw_text[1:-1]}"\n'
-        return token
-    if raw_text in ["true", "false"]:
-        token = Token("boolean")
-        token.attributes["value"] = raw_text
-        return token
-    if raw_text.startswith("call "):
-        token = Token("shit")
-        token.attributes["value"] = raw_text.split("call ")[1]
-        return token
-    try:
-        int(raw_text)
-        token = Token("int")
-        token.attributes["value"] = raw_text
-        return token
-    except ValueError:
-        float(raw_text)
-        token = Token("float")
-        token.attributes["value"] = raw_text
-        return token
 
 
 def multipart_parser(raw_text: str) -> Tuple[str, Token]:
@@ -204,7 +301,10 @@ def static_parser(raw_text: str) -> Tuple[str, Token]:
     :param raw_text:
     :return:
     """
-    raw_text = raw_text.split("static ", 1)[1]
+    if raw_text.lstrip().startswith("static "):
+        raw_text = raw_text.lstrip().split("static ", 1)[1]
+    else:
+        return "", None
     data_structure, text = raw_text.split(" ", 1)
     token: Token = None
     if data_structure == "container":
@@ -289,26 +389,51 @@ def tokenize(content: str) -> List[Token]:
             index += 1
             continue
 
-        if read.startswith("reusable"):
-            content, token = function_parser(content[index - 7:])
-            tokens.append(token)
-            read = ""
-            index = 0
-            continue
+        if read.startswith("reusable "):
+            # print("reusable " + content[index + 1:])
+            text, token = function_parser("reusable " + content[index + 1:])
+            if token:
+                content = text
+                tokens.append(token)
+                read = ""
+                index = 0
+                continue
 
-        if read.startswith("call"):
-            content, token = call_parser(content[index - 3:])
-            tokens.append(token)
-            read = ""
-            index = 0
-            continue
+        if read.startswith("call "):
+            text, token = call_parser("call " + content[index + 1:])
+            if token:
+                content = text
+                tokens.append(token)
+                read = ""
+                index = 0
+                continue
 
-        if read.startswith("static"):
-            content, token = static_parser(content[index - 5:])
-            tokens.append(token)
-            read = ""
-            index = 0
-            continue
+        if read.startswith("static "):
+            text, token = static_parser("static " + content[index + 1:])
+            if token:
+                content = text
+                tokens.append(token)
+                read = ""
+                index = 0
+                continue
+
+        if read.startswith("repeat "):
+            text, token = repeat_query_parser("repeat " + content[index + 1:])
+            if token:
+                content = text
+                tokens.append(token)
+                read = ""
+                index = 0
+                continue
+
+        if read.startswith("query "):
+            text, token = query_parser(content)
+            if token:
+                content = text
+                tokens.append(token)
+                read = ""
+                index = 0
+                continue
 
         index += 1
 
@@ -328,6 +453,9 @@ try:
     with open(args['dds_file']) as f:
         content = f.read()
     tokens = tokenize(content)
+    # for t in tokens:
+    #     t.info()
+    # print(tokens[1].attributes["code_block"][0].info())
     convert2py(tokens, dds_file[:-4] + ".py")
 except FileNotFoundError:
     print(f"[INFO] Could not find dds file '{dds_file}'")
