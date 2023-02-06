@@ -43,12 +43,14 @@ query (condition) executes {
     // logic
 }
 
+// not implemented yet
 query (condition) executes {
     // logic
 } otherwise {
     // logic
 }
 
+// not implemented yet
 query (condition) executes {
     // logic
 } otherwise query (condition2) executes {
@@ -60,6 +62,7 @@ query (condition) executes {
 
 Loops
 ```
+// not implemented yet
 repeat (<int> start, <int> stop, <int> index) {
     // logic
 }
