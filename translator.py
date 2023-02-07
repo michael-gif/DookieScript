@@ -38,7 +38,8 @@ def convert_token(token: Token) -> list:
         'call': convert_call,
         'repeat': convert_for,
         'repeat_query': convert_while,
-        'query': convert_query
+        'query': convert_query,
+        'return': convert_return
     }
     if token.name in ["string", "int", "float", "boolean", "shit"]:
         python_strings += [token.attributes["value"]]
@@ -146,3 +147,16 @@ def convert_query(token: Token) -> list[str]:
         else:
             lines += ["    " + line for line in convert_token(t)]
     return lines
+
+
+def convert_return(token: Token) -> list[str]:
+    """
+    | Convert return statement
+    :param token:
+    :return:
+    """
+    return_value = token.attributes["return_value"]
+    if return_value:
+        return ["return " + convert_token(return_value[0])[0]]
+    else:
+        return ["return"]

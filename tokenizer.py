@@ -29,7 +29,7 @@ def include_parser(raw_text: str) -> Tuple[str, Token]:
     return remaining_text, token
 
 
-def function_parser(raw_text: str) -> Tuple[str, Token]:
+def reusable_parser(raw_text: str) -> Tuple[str, Token]:
     """
     | Parses function declarations
     :param raw_text:
@@ -73,7 +73,7 @@ def function_parser(raw_text: str) -> Tuple[str, Token]:
         if scanned.endswith("}"):
             bracket_counter -= 1
         if found_code_block and not bracket_counter and not "code_block" in attribs:
-            code_block = scanned[:-1].lstrip().rstrip()
+            code_block = scanned[:-1].lstrip()
             attribs["code_block"] = code_block
             break
         index += 1
@@ -111,10 +111,11 @@ def call_parser(raw_text: str) -> Tuple[str, Token]:
             params_string = scanned[:-1]
             if not params_string:
                 index += 1
-                break
-            params = [p.strip() for p in params_string.split(" ")]
+                continue
+            params = [p.strip() for p in params_string.split(",")]
             for param in params:
                 attribs["parameters"].append(param)
+        if scanned.endswith("\n"):
             break
         index += 1
 
@@ -399,6 +400,35 @@ def static_parser(raw_text: str) -> Tuple[str, Token]:
     return remaining_text, token
 
 
+def return_parser(raw_text: str) -> Tuple[str, Token]:
+    """
+    | Parses return statements
+    :param raw_text:
+    :return:
+    """
+    if raw_text.lstrip().startswith("return "):
+        raw_text = raw_text.lstrip().split("return ", 1)[1]
+    else:
+        return "", None
+
+    token = Token("return")
+    attribs = {}
+    index = 0
+    scanned = ""
+    while index < len(raw_text):
+        char = raw_text[index]
+        scanned += char
+        if scanned.endswith("\n") and not "return_value" in attribs:
+            attribs["return_value"] = scanned[:-1]
+            break
+        index += 1
+
+    attribs["return_value"] = tokenize(attribs["return_value"])
+    token.attributes = attribs
+    remaining_text = raw_text[index + 1:]
+    return remaining_text, token
+
+
 def tokenize(content: str) -> List[Token]:
     """
     | Tokenizes a code block
@@ -413,11 +443,12 @@ def tokenize(content: str) -> List[Token]:
     tokens = []
     parsers = {
         'include ': include_parser,
-        'reusable ': function_parser,
+        'reusable ': reusable_parser,
         'call ': call_parser,
         'static ': static_parser,
         'repeat ': repeat_parser,
-        'query ': query_parser
+        'query ': query_parser,
+        'return ': return_parser
     }
     parser_keys = list(parsers.keys())
 
