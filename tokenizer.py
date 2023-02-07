@@ -511,6 +511,15 @@ def tokenize(content: str) -> List[Token]:
             index += 1
             continue
 
+        if scanned.endswith("return;\n") or scanned.endswith("return\n"):
+            text, token = parsers["return "]("return \n")
+            if token:
+                content = text
+                tokens.append(token)
+                scanned = ""
+                index = 0
+                continue
+
         # if the end of a line is found, reset the scanned variable and continue
         if scanned.endswith("\n"):
             scanned = ""
