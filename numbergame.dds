@@ -11,7 +11,7 @@ reusable getComputerNumber() returns <int> {
 Get the player's number using input. Make sure the input is a number between 1 and 10.
 '''
 reusable getPlayerNumber() returns <int> {
-    repeat query (true) {
+    repeat (<int> i=0, <int> i = 10, i++) {
         static container <int> playerNumber << "Enter a number from 1 to 10";
         query (1 <= playerNumber <= 10) executes {
             return playerNumber;

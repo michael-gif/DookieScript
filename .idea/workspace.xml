@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b66d2a0e-bdba-45dd-a6c7-b51a60e8374b" name="Changes" comment="refactored stuff. tokenizer code moved into tokenizer.py, renamed converter.py to translator.py.">
-      <change beforePath="$PROJECT_DIR$/tokenizer.py" beforeDir="false" afterPath="$PROJECT_DIR$/tokenizer.py" afterDir="false" />
-    </list>
+    <list default="true" id="b66d2a0e-bdba-45dd-a6c7-b51a60e8374b" name="Changes" comment="added more descriptive documentation to the tokenizer" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -63,7 +61,28 @@
       <option name="project" value="LOCAL" />
       <updated>1675791919754</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="replaced excess logic with a dictionary of parsers and a for loop">
+      <created>1675792195426</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1675792195426</updated>
+    </task>
+    <task id="LOCAL-00003" summary="removed commented code">
+      <created>1675792214937</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1675792214937</updated>
+    </task>
+    <task id="LOCAL-00004" summary="added more descriptive documentation to the tokenizer">
+      <created>1675792708537</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1675792708537</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -79,6 +98,9 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="refactored stuff. tokenizer code moved into tokenizer.py, renamed converter.py to translator.py." />
-    <option name="LAST_COMMIT_MESSAGE" value="refactored stuff. tokenizer code moved into tokenizer.py, renamed converter.py to translator.py." />
+    <MESSAGE value="replaced excess logic with a dictionary of parsers and a for loop" />
+    <MESSAGE value="removed commented code" />
+    <MESSAGE value="added more descriptive documentation to the tokenizer" />
+    <option name="LAST_COMMIT_MESSAGE" value="added more descriptive documentation to the tokenizer" />
   </component>
 </project>

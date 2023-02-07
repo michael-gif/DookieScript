@@ -131,6 +131,7 @@ def query_parser(raw_text: str) -> Tuple[str, Token]:
         if found_code_block and not bracket_counter:
             code_block = scanned[:-1]
             attribs["code_block"] = code_block
+            scanned = ""
             break
         index += 1
 
@@ -139,6 +140,59 @@ def query_parser(raw_text: str) -> Tuple[str, Token]:
         attribs["code_block"] = result
     else:
         attribs["code_block"] = [attribs["code_block"]]
+    token.attributes = attribs
+    remaining_text = raw_text[index + 1:]
+    return remaining_text, token
+
+
+def repeat_parser(raw_text: str) -> Tuple[str, Token]:
+    """
+    | Parses for loops
+    :param raw_text:
+    :return:
+    """
+    if raw_text.lstrip().startswith("repeat "):
+        raw_text = raw_text.lstrip().split("repeat ", 1)[1]
+    else:
+        return "", None
+
+    if raw_text.startswith("query "):
+        text, token = repeat_query_parser("repeat " + raw_text)
+        return text, token
+
+    token = Token("repeat")
+    attribs = {}
+    index = 0
+    scanned = ""
+    found_code_block = False
+    bracket_counter = 0
+    while index < len(raw_text):
+        char = raw_text[index]
+        scanned += char
+        scanned = scanned.lstrip()
+        if scanned.startswith("(") and scanned.endswith(")") and not "start_stop_step" in attribs:
+            start_stop_step = scanned[:-1]
+            parts = [p.strip() for p in start_stop_step.split(",")]
+            start = parts[0].split(">")[1].strip()
+            stop = parts[1].split(">")[1].strip()
+            step = parts[2]
+            iterator_name, iterator_start_value = [i.strip() for i in start.split("=")]
+            iterator_stop_value = stop.split("=")[1].strip()
+            iterator_step_value = step.split(iterator_name)[1].strip()
+            attribs["start_stop_step"] = [iterator_name, iterator_start_value, iterator_stop_value, iterator_step_value]
+            scanned = ""
+        if scanned.endswith("{"):
+            bracket_counter += 1
+            found_code_block = True
+        if scanned.endswith("}"):
+            bracket_counter -= 1
+        if found_code_block and not bracket_counter:
+            code_block = scanned[:-1]
+            attribs["code_block"] = code_block
+            break
+        index += 1
+
+    attribs["code_block"] = tokenize(attribs["code_block"])
     token.attributes = attribs
     remaining_text = raw_text[index + 1:]
     return remaining_text, token
@@ -334,7 +388,7 @@ def tokenize(content: str) -> List[Token]:
         'reusable ': function_parser,
         'call ': call_parser,
         'static ': static_parser,
-        'repeat ': repeat_query_parser,
+        'repeat ': repeat_parser,
         'query ': query_parser
     }
     parser_keys = list(parsers.keys())
