@@ -147,7 +147,7 @@ def query_parser(raw_text: str) -> Tuple[str, Token]:
     index = 0
     scanned = ""
     found_code_block = False
-    bracket_counter = 0
+    curly_bracket_counter = 0
     while index < len(raw_text):
         char = raw_text[index]
         scanned += char
@@ -159,12 +159,12 @@ def query_parser(raw_text: str) -> Tuple[str, Token]:
         if scanned.endswith("executes {"):
             scanned = ""
             found_code_block = True
-            bracket_counter += 1
+            curly_bracket_counter += 1
         if scanned.endswith("{"):
-            bracket_counter += 1
+            curly_bracket_counter += 1
         if scanned.endswith("}"):
-            bracket_counter -= 1
-        if found_code_block and not bracket_counter:
+            curly_bracket_counter -= 1
+        if found_code_block and not curly_bracket_counter:
             code_block = scanned[:-1]
             attribs["code_block"] = code_block
             scanned = ""
