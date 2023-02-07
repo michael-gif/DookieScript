@@ -5,7 +5,7 @@ from typing import List, Any
 from token import Token
 
 
-def convert2py(tokens: List[Token], destination: str) -> str:
+def translate_to_python(tokens: List[Token], destination: str) -> str:
     """
     | Convert a tree of tokens into python code
     :param tokens:
