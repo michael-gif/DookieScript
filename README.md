@@ -62,7 +62,7 @@ query (condition) executes {
 
 Loops
 ```
-// not implemented yet
+// only supports ++ and --
 repeat (<int> start = 0, <int> stop = 10, start++) {
     // logic
 }
