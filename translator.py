@@ -36,6 +36,8 @@ def convert_token(token: Token) -> list:
         python_strings += convert_variable(token)
     if token.name == "call":
         python_strings += convert_call(token)
+    if token.name == "repeat":
+        python_strings += convert_for(token)
     if token.name == "repeat_query":
         python_strings += convert_while(token)
     if token.name == "query":
@@ -95,7 +97,19 @@ def convert_call(token: Token) -> list[str]:
     return [function_call]
 
 
-def convert_while(token: Token) -> list[str | Any]:
+def convert_for(token: Token) -> list[str]:
+    values = token.attributes["start_stop_step"]
+    if values[3] == "++":
+        values[3] = 1
+    if values[3] == "--":
+        values[3] = -1
+    lines = [f"for {values[0]} in range({values[1]}, {values[2]}, {values[3]}):"]
+    for t in token.attributes["code_block"]:
+        lines += ["    " + line for line in convert_token(t)]
+    return lines
+
+
+def convert_while(token: Token) -> list[str]:
     """
     | Convert a while loop into python code
     :param token:
@@ -109,7 +123,7 @@ def convert_while(token: Token) -> list[str | Any]:
     return lines
 
 
-def convert_query(token: Token) -> list[str | Any]:
+def convert_query(token: Token) -> list[str]:
     """
     | Convert an if statement into python code
     :param token:
