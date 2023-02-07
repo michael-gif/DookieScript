@@ -2,6 +2,33 @@ from token import Token
 from typing import Tuple, List
 
 
+def include_parser(raw_text: str) -> Tuple[str, Token]:
+    """
+    | Parses imports
+    :param raw_text:
+    :return:
+    """
+    if raw_text.lstrip().startswith("include "):
+        raw_text = raw_text.lstrip().split("include ", 1)[1]
+    else:
+        return "", None
+    token = Token("include")
+    attribs = {}
+    index = 0
+    scanned = ""
+    while index < len(raw_text):
+        char = raw_text[index]
+        scanned += char
+        if scanned.endswith("\n") and "module_name" not in attribs:
+            attribs["module_name"] = scanned[:-1]
+            break
+        index += 1
+
+    token.attributes = attribs
+    remaining_text = raw_text[index + 1:]
+    return remaining_text, token
+
+
 def function_parser(raw_text: str) -> Tuple[str, Token]:
     """
     | Parses function declarations
@@ -385,6 +412,7 @@ def tokenize(content: str) -> List[Token]:
     """
     tokens = []
     parsers = {
+        'include ': include_parser,
         'reusable ': function_parser,
         'call ': call_parser,
         'static ': static_parser,

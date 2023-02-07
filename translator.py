@@ -12,12 +12,13 @@ def translate_to_python(tokens: List[Token], destination: str) -> str:
     :return:
     """
     print("[INFO] Translating doodooscript into python")
-    python_code = [convert_token(t) for t in tokens]
-    print(python_code)
+    lines = []
+    for t in tokens:
+        lines += convert_token(t)
+    print(lines)
     with open(destination, 'w') as f:
-        for code in python_code:
-            python_string = '\n'.join(code)
-            f.write(python_string + "\n")
+        for line in lines:
+            f.write(line + "\n")
     print("[INFO] Executing python code\n")
     #subprocess.call(["python", "-m", destination[:-3]], shell=True)
     #os.remove(destination)
@@ -30,21 +31,29 @@ def convert_token(token: Token) -> list:
     :return:
     """
     python_strings = []
-    if token.name == "reusable":
-        python_strings += convert_function(token)
-    if token.name == "container":
-        python_strings += convert_variable(token)
-    if token.name == "call":
-        python_strings += convert_call(token)
-    if token.name == "repeat":
-        python_strings += convert_for(token)
-    if token.name == "repeat_query":
-        python_strings += convert_while(token)
-    if token.name == "query":
-        python_strings += convert_query(token)
+    converters = {
+        'include': convert_import,
+        'reusable': convert_function,
+        'container': convert_variable,
+        'call': convert_call,
+        'repeat': convert_for,
+        'repeat_query': convert_while,
+        'query': convert_query
+    }
     if token.name in ["string", "int", "float", "boolean", "shit"]:
         python_strings += [token.attributes["value"]]
+    else:
+        python_strings += converters[token.name](token)
     return python_strings
+
+
+def convert_import(token: Token) -> list[str]:
+    """
+    | Convert a module name into an import
+    :param token:
+    :return:
+    """
+    return ["import " + token.attributes["module_name"]]
 
 
 def convert_function(token: Token) -> list[str]:
@@ -72,7 +81,6 @@ def convert_function(token: Token) -> list[str]:
     else:
         code_block.append("    pass")
     lines += code_block
-    lines += ["", ""]
     return lines
 
 

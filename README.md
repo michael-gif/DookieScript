@@ -22,6 +22,12 @@ My own programming language
 - modulo -> %
 
 ### Language syntax
+Imports
+```
+include module_name
+include math
+include pygame
+```
 Variables
 ```
 container <int> age = 8
