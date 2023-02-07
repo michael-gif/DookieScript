@@ -320,7 +320,12 @@ def static_parser(raw_text: str) -> Tuple[str, Token]:
 
 def tokenize(content: str) -> List[Token]:
     """
-    | Tokenizes a string
+    | Tokenizes a code block
+    | Explanation:
+    | Loop through each character of the given string, adding every character to a variable called 'scanned'. When the
+    | variable contains a recognisable keyword such as 'reusable', 'static' etc, get the appropiate parser for that
+    | keyword, and give the parser the rest of the string from the current index to the end. The parser then parses the
+    | content, and returns the token it generated.
     :param content:
     :return:
     """
@@ -335,9 +340,8 @@ def tokenize(content: str) -> List[Token]:
     parser_keys = list(parsers.keys())
 
     # parse text
-    read = ""
+    scanned = ""
     index = 0
-    current_token: Token = None
     found_comment = False
     found_multiline_comment = False
     found_docstring = False
@@ -345,40 +349,39 @@ def tokenize(content: str) -> List[Token]:
     while index < len(content):
 
         char = content[index]
-
-        read += char
-        read = read.lstrip()
+        scanned += char
+        scanned = scanned.lstrip()  # remove tabs and spaces before the text
 
         # identify comments
-        if read.startswith("//") and not found_comment:
+        if scanned.startswith("//") and not found_comment:
             found_comment = True
             index += 1
             continue
 
         # skip over characters until end of the comment
         if found_comment:
-            if read.endswith("\n"):
+            if scanned.endswith("\n"):
                 found_comment = False
-                read = ""
+                scanned = ""
             index += 1
             continue
 
         # identify multiline comments
-        if read.startswith("/*") and not found_multiline_comment:
+        if scanned.startswith("/*") and not found_multiline_comment:
             found_multiline_comment = True
             index += 1
             continue
 
         # skip over characters until end of multiline comment
         if found_multiline_comment:
-            if read.endswith("*/\n"):
+            if scanned.endswith("*/\n"):
                 found_multiline_comment = False
-                read = ""
+                scanned = ""
             index += 1
             continue
 
         # identify docstrings
-        if read.startswith("'''") and not found_docstring:
+        if scanned.startswith("'''") and not found_docstring:
             found_docstring = True
             # account for both single and multiline docstrings.
             # if the docstring is multiline, then remove the \n after the first '''.
@@ -389,24 +392,26 @@ def tokenize(content: str) -> List[Token]:
 
         # skip over characters until end of docstring
         if found_docstring:
-            if len(read) > 3 and read.endswith("'''\n"):
+            if len(scanned) > 3 and scanned.endswith("'''\n"):
                 found_docstring = False
-                read = ""
+                scanned = ""
             index += 1
             continue
 
-        if read.endswith("\n") and not current_token:
-            read = ""
+        # if the end of a line is found, reset the scanned variable and continue
+        if scanned.endswith("\n"):
+            scanned = ""
             index += 1
             continue
 
+        # check the characters already scanned to see if they match a keyword, if they do, call the relevant parser
         for key in parser_keys:
-            if read.startswith(key):
+            if scanned.startswith(key):
                 text, token = parsers[key](key + content[index + 1:])
                 if token:
                     content = text
                     tokens.append(token)
-                    read = ""
+                    scanned = ""
                     index = 0
                     continue
 
