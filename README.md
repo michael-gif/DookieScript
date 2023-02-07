@@ -63,7 +63,7 @@ query (condition) executes {
 Loops
 ```
 // not implemented yet
-repeat (<int> start, <int> stop, <int> index) {
+repeat (<int> start = 0, <int> stop = 10, start++) {
     // logic
 }
 
