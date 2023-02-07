@@ -99,14 +99,22 @@ def call_parser(raw_text: str) -> Tuple[str, Token]:
     attribs = {}
     index = 0
     scanned = ""
+    bracket_counter = 0
+    found_bracket = False
     while index < len(raw_text):
         char = raw_text[index]
         scanned += char
         if scanned.endswith("("):
-            function_name = scanned[:-1].strip()
-            attribs["function_name"] = function_name
-            scanned = ""
+            if not found_bracket:
+                function_name = scanned[:-1].strip()
+                attribs["function_name"] = function_name
+                scanned = ""
+            bracket_counter += 1
+            found_bracket = True
         if scanned.endswith(")"):
+            bracket_counter -= 1
+        if found_bracket and not bracket_counter:
+            found_bracket = False
             attribs["parameters"] = []
             params_string = scanned[:-1]
             if not params_string:
@@ -326,7 +334,7 @@ def container_parser(raw_text: str) -> Tuple[str, Token]:
             attribs["variable_name"] = variable_name
             scanned = ""
 
-        if scanned.endswith(";"):
+        if scanned.endswith("\n"):
             variable_value = scanned[:-1].strip()
             tokenized_value = value_parser(variable_value)
             attribs["variable_value"] = tokenized_value
