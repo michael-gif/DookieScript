@@ -410,52 +410,6 @@ def tokenize(content: str) -> List[Token]:
                     index = 0
                     continue
 
-        # if read.startswith("reusable "):
-        #     # print("reusable " + content[index + 1:])
-        #     text, token = function_parser("reusable " + content[index + 1:])
-        #     if token:
-        #         content = text
-        #         tokens.append(token)
-        #         read = ""
-        #         index = 0
-        #         continue
-        #
-        # if read.startswith("call "):
-        #     text, token = call_parser("call " + content[index + 1:])
-        #     if token:
-        #         content = text
-        #         tokens.append(token)
-        #         read = ""
-        #         index = 0
-        #         continue
-        #
-        # if read.startswith("static "):
-        #     text, token = static_parser("static " + content[index + 1:])
-        #     if token:
-        #         content = text
-        #         tokens.append(token)
-        #         read = ""
-        #         index = 0
-        #         continue
-        #
-        # if read.startswith("repeat "):
-        #     text, token = repeat_query_parser("repeat " + content[index + 1:])
-        #     if token:
-        #         content = text
-        #         tokens.append(token)
-        #         read = ""
-        #         index = 0
-        #         continue
-        #
-        # if read.startswith("query "):
-        #     text, token = query_parser(content)
-        #     if token:
-        #         content = text
-        #         tokens.append(token)
-        #         read = ""
-        #         index = 0
-        #         continue
-
         index += 1
 
     return tokens
