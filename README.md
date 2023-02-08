@@ -1,5 +1,5 @@
 # DookieScript
-My own programming language
+Slightly annoying programming language
 
 ### Available datatypes
 - int `<int>`
