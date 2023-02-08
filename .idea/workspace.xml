@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b66d2a0e-bdba-45dd-a6c7-b51a60e8374b" name="Changes" comment="added more descriptive documentation to the tokenizer" />
+    <list default="true" id="b66d2a0e-bdba-45dd-a6c7-b51a60e8374b" name="Changes" comment="wait, i meant for the call statement, not return statement">
+      <change afterPath="$PROJECT_DIR$/test.dds" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tokenizer.py" beforeDir="false" afterPath="$PROJECT_DIR$/tokenizer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/translator.py" beforeDir="false" afterPath="$PROJECT_DIR$/translator.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -17,6 +22,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
@@ -36,7 +42,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
-      <option name="PARAMETERS" value="-dds numbergame.dds" />
+      <option name="PARAMETERS" value="-dds test.dds" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -82,7 +88,70 @@
       <option name="project" value="LOCAL" />
       <updated>1675792708537</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="updated for loop in README.md">
+      <created>1675793488403</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1675793488403</updated>
+    </task>
+    <task id="LOCAL-00006" summary="added for loop to tokenizer.py">
+      <created>1675794176228</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1675794176228</updated>
+    </task>
+    <task id="LOCAL-00007" summary="added for loop to translator.py">
+      <created>1675794278883</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1675794278883</updated>
+    </task>
+    <task id="LOCAL-00008" summary="updated README.md about for loop">
+      <created>1675794310817</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1675794310817</updated>
+    </task>
+    <task id="LOCAL-00009" summary="added imports">
+      <created>1675796140699</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1675796140699</updated>
+    </task>
+    <task id="LOCAL-00010" summary="added return statement">
+      <created>1675798908422</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1675798908422</updated>
+    </task>
+    <task id="LOCAL-00011" summary="added special edge case for when a return statement is just the keyword 'return' and nothing else">
+      <created>1675799153825</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1675799153825</updated>
+    </task>
+    <task id="LOCAL-00012" summary="added support for function calls within a return statement">
+      <created>1675799668416</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1675799668416</updated>
+    </task>
+    <task id="LOCAL-00013" summary="wait, i meant for the call statement, not return statement">
+      <created>1675799766129</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1675799766129</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -90,17 +159,34 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="CUSTOM_BOOLEAN_PROPERTIES">
+                <map>
+                  <entry key="Show.Git.Branches" value="true" />
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="refactored stuff. tokenizer code moved into tokenizer.py, renamed converter.py to translator.py." />
     <MESSAGE value="replaced excess logic with a dictionary of parsers and a for loop" />
     <MESSAGE value="removed commented code" />
     <MESSAGE value="added more descriptive documentation to the tokenizer" />
-    <option name="LAST_COMMIT_MESSAGE" value="added more descriptive documentation to the tokenizer" />
+    <MESSAGE value="updated for loop in README.md" />
+    <MESSAGE value="added for loop to tokenizer.py" />
+    <MESSAGE value="added for loop to translator.py" />
+    <MESSAGE value="updated README.md about for loop" />
+    <MESSAGE value="added imports" />
+    <MESSAGE value="added return statement" />
+    <MESSAGE value="added special edge case for when a return statement is just the keyword 'return' and nothing else" />
+    <MESSAGE value="added support for function calls within a return statement" />
+    <MESSAGE value="wait, i meant for the call statement, not return statement" />
+    <option name="LAST_COMMIT_MESSAGE" value="wait, i meant for the call statement, not return statement" />
   </component>
 </project>

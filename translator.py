@@ -57,6 +57,23 @@ def convert_import(token: Token) -> list[str]:
     return ["import " + token.attributes["module_name"]]
 
 
+def convert_type(dds_type: str) -> str:
+    """
+    | Convert a dds type into a python type
+    :param token:
+    :return:
+    """
+    mappings = {
+        '<int>': 'int',
+        '<float>': 'float',
+        '<string>': 'str',
+        '<boolean>': 'bool'
+    }
+    if dds_type not in mappings:
+        raise KeyError(f"could not map dds type to python type: {dds_type}")
+    return mappings[dds_type]
+
+
 def convert_function(token: Token) -> list[str]:
     """
     | Convert a function into it's definition and code block
@@ -69,7 +86,7 @@ def convert_function(token: Token) -> list[str]:
     declaration += "def " + function_name + "("
     parameters = token.attributes["parameters"]
     parameters_string = [p_name for p_name, p_type in parameters]
-    declaration += ', '.join(parameters_string) + "):"
+    declaration += ', '.join(parameters_string) + ") -> " + convert_type(token.attributes["return_type"]) + ":"
     lines.append(declaration)
 
     function_body = token.attributes["code_block"]

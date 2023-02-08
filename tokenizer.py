@@ -35,6 +35,11 @@ def reusable_parser(raw_text: str) -> Tuple[str, Token]:
     :param raw_text:
     :return:
     """
+
+    def isValidParamType(param: str) -> bool:
+        valid_params = ["<int>", "<float>", "<string>", "<boolean>"]
+        return param in valid_params
+
     if raw_text.lstrip().startswith("reusable "):
         raw_text = raw_text.lstrip().split("reusable ", 1)[1]
     else:
@@ -43,14 +48,23 @@ def reusable_parser(raw_text: str) -> Tuple[str, Token]:
     attribs = {}
     index = 0
     scanned = ""
-    bracket_counter = 0
+    curly_bracket_counter = 0
+    first_curly_bracket_index = 0
     found_code_block = False
     while index < len(raw_text):
         char = raw_text[index]
         scanned += char
+        scanned = scanned.lstrip()
         if scanned.endswith("(") and not "function_name" in attribs:
-            attribs["function_name"] = scanned[:-1]
-            scanned = ""
+            potential_function_name = scanned[:-1]
+            # validate the function name
+            if potential_function_name[0].isnumeric():
+                raise SyntaxError(f"function names can't start with a number\nHere --> {scanned}")
+            if potential_function_name.isalnum():
+                attribs["function_name"] = potential_function_name
+                scanned = ""
+            else:
+                raise SyntaxError(f"function names can only contain letters and numbers\nHere --> {scanned}")
         if scanned.endswith(")") and not "parameters" in attribs:
             attribs["parameters"] = []
             params_string = scanned[:-1].strip()
@@ -60,23 +74,39 @@ def reusable_parser(raw_text: str) -> Tuple[str, Token]:
                 continue
             params = [p.strip() for p in params_string.split(",")]
             for param in params:
-                param_type, param_name = param.split(" ")
-                attribs["parameters"].append((param_name, param_type))
+                split_parts = param.rsplit(">", 1)
+                param_type = split_parts[0] + ">"
+                param_name = split_parts[1].strip()
+                # validate the parameter type
+                if isValidParamType(param_type):
+                    attribs["parameters"].append((param_name, param_type))
+                else:
+                    raise SyntaxError(f"invalid parameter type '{param_type}'\nHere --> ({params_string})")
             scanned = ""
         if scanned.endswith("{"):
             if "return_type" not in attribs:
-                return_type = scanned.strip().split(" ")[1]
-                attribs["return_type"] = return_type
-                scanned = ""
+                # enforce ~
+                if scanned[0] != "~":
+                    raise SyntaxError(f"expected '~', instead got '{scanned[0]}'\nHere --> ) {scanned}")
+                else:
+                    return_type = scanned[1:].strip().split(">", 1)[0] + ">"
+                    attribs["return_type"] = return_type
+                    scanned = ""
             found_code_block = True
-            bracket_counter += 1
+            curly_bracket_counter += 1
+            if not first_curly_bracket_index:
+                first_curly_bracket_index = index
         if scanned.endswith("}"):
-            bracket_counter -= 1
-        if found_code_block and not bracket_counter and not "code_block" in attribs:
+            curly_bracket_counter -= 1
+        if found_code_block and not curly_bracket_counter and not "code_block" in attribs:
             code_block = scanned[:-1].lstrip()
             attribs["code_block"] = code_block
             break
         index += 1
+
+    # if we get to the end of the given text, and the bracket counter isn't 0, then there is a mismatched bracket
+    if curly_bracket_counter:
+        raise SyntaxError(f"could not find closing bracket\nHere --> {raw_text[first_curly_bracket_index:]}")
 
     attribs["code_block"] = tokenize(attribs["code_block"])
 
