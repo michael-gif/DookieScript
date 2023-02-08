@@ -15,6 +15,8 @@ if not dds_file.endswith(".dds"):
 try:
     with open(args['dds_file']) as f:
         content = f.read()
+    if not content.endswith("\n"):
+        content = content + "\n"
     tokens = tokenize(content)
     # for t in tokens:
     #     t.info()
