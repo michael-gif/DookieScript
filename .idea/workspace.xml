@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b66d2a0e-bdba-45dd-a6c7-b51a60e8374b" name="Changes" comment="while loop parser now raises a syntax error if you forget the keyword 'executes'" />
+    <list default="true" id="b66d2a0e-bdba-45dd-a6c7-b51a60e8374b" name="Changes" comment="added a goal" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -290,7 +290,14 @@
       <option name="project" value="LOCAL" />
       <updated>1675865834722</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="added a goal">
+      <created>1675866589528</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1675866589528</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -313,7 +320,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="updated for loop in README.md" />
     <MESSAGE value="added for loop to tokenizer.py" />
     <MESSAGE value="added for loop to translator.py" />
     <MESSAGE value="updated README.md about for loop" />
@@ -338,6 +344,7 @@
     <MESSAGE value="fixed most warnings" />
     <MESSAGE value="removed debug code" />
     <MESSAGE value="while loop parser now raises a syntax error if you forget the keyword 'executes'" />
-    <option name="LAST_COMMIT_MESSAGE" value="while loop parser now raises a syntax error if you forget the keyword 'executes'" />
+    <MESSAGE value="added a goal" />
+    <option name="LAST_COMMIT_MESSAGE" value="added a goal" />
   </component>
 </project>

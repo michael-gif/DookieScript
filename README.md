@@ -80,7 +80,7 @@ repeat (<int> start = 0, <int> stop = 10, start++) {
     // logic
 }
 
-repeat query (condition) {
+repeat query (condition) executes {
     // logic
 }
 ```
