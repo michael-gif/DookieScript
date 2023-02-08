@@ -157,7 +157,6 @@ def call_parser(raw_text: str) -> tuple[str, None] | tuple[str, Token]:
     :param raw_text:
     :return:
     """
-    print(raw_text)
     if raw_text.lstrip().startswith("call "):
         raw_text = raw_text.lstrip().split("call ", 1)[1]
     else:

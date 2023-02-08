@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b66d2a0e-bdba-45dd-a6c7-b51a60e8374b" name="Changes" comment="added \n to end of code if there isn't one present already">
-      <change beforePath="$PROJECT_DIR$/test.dds" beforeDir="false" afterPath="$PROJECT_DIR$/test.dds" afterDir="false" />
+    <list default="true" id="b66d2a0e-bdba-45dd-a6c7-b51a60e8374b" name="Changes" comment="fixed most warnings">
+      <change beforePath="$PROJECT_DIR$/tokenizer.py" beforeDir="false" afterPath="$PROJECT_DIR$/tokenizer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/translator.py" beforeDir="false" afterPath="$PROJECT_DIR$/translator.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -232,7 +233,28 @@
       <option name="project" value="LOCAL" />
       <updated>1675862388299</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="removed test.dds">
+      <created>1675862517385</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1675862517385</updated>
+    </task>
+    <task id="LOCAL-00027" summary="cleanup">
+      <created>1675862586654</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1675862586654</updated>
+    </task>
+    <task id="LOCAL-00028" summary="fixed most warnings">
+      <created>1675862885489</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1675862885489</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -255,9 +277,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="refactored stuff. tokenizer code moved into tokenizer.py, renamed converter.py to translator.py." />
-    <MESSAGE value="replaced excess logic with a dictionary of parsers and a for loop" />
-    <MESSAGE value="removed commented code" />
     <MESSAGE value="added more descriptive documentation to the tokenizer" />
     <MESSAGE value="updated for loop in README.md" />
     <MESSAGE value="added for loop to tokenizer.py" />
@@ -280,6 +299,9 @@
     <MESSAGE value="removed debug code" />
     <MESSAGE value="added container and multipart to parser dictionary" />
     <MESSAGE value="added \n to end of code if there isn't one present already" />
-    <option name="LAST_COMMIT_MESSAGE" value="added \n to end of code if there isn't one present already" />
+    <MESSAGE value="removed test.dds" />
+    <MESSAGE value="cleanup" />
+    <MESSAGE value="fixed most warnings" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed most warnings" />
   </component>
 </project>
