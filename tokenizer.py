@@ -317,23 +317,34 @@ def repeat_query_parser(raw_text: str) -> tuple[str, None] | tuple[str, Token]:
     scanned = ""
     found_code_block = False
     bracket_counter = 0
+    check_stage = 0
     while index < len(raw_text):
         char = raw_text[index]
         scanned += char
         scanned = scanned.lstrip()
-        if scanned.startswith("(") and scanned.endswith(")") and "condition" not in attribs:
-            condition = scanned[1:-1]
-            attribs["condition"] = condition
-            scanned = ""
-        if scanned.endswith("{"):
-            bracket_counter += 1
-            found_code_block = True
-        if scanned.endswith("}"):
-            bracket_counter -= 1
-        if found_code_block and not bracket_counter:
-            code_block = scanned[:-1]
-            attribs["code_block"] = code_block
-            break
+        if check_stage == 0:
+            if scanned.startswith("(") and scanned.endswith(")") and "condition" not in attribs:
+                condition = scanned[1:-1]
+                attribs["condition"] = condition
+                scanned = ""
+                check_stage += 1
+            index += 1
+            continue
+
+        if check_stage == 1:
+            if scanned.endswith("{"):
+                if not found_code_block and scanned[:-1].strip() != "executes":
+                    raise SyntaxError(f"missing keyword executes\nhere --> {scanned}")
+                bracket_counter += 1
+                found_code_block = True
+            if scanned.endswith("}"):
+                bracket_counter -= 1
+            if found_code_block and not bracket_counter:
+                code_block = scanned[:-1]
+                attribs["code_block"] = code_block
+                break
+            index += 1
+            continue
         index += 1
 
     attribs["code_block"] = tokenize(attribs["code_block"])
