@@ -82,8 +82,10 @@ Functions
 ```
 '''
 this is a docstring
+the type specified after the '~' is the return type
+in this case, the return type is <boolean>
 '''
-reusable foo(<int> param1, <string> param2) returns <boolean> {
+reusable foo(<int> param1, <string> param2) ~ <boolean> {
     // logic
     return true;
 }

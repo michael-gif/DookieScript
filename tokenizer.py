@@ -165,6 +165,7 @@ def call_parser(raw_text: str) -> Tuple[str, Token]:
     while index < len(raw_text):
         char = raw_text[index]
         scanned += char
+        scanned = scanned.lstrip()
         if scanned.endswith("("):
             if not found_bracket:
                 function_name = scanned[:-1].strip()

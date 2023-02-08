@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b66d2a0e-bdba-45dd-a6c7-b51a60e8374b" name="Changes" comment="wait, i meant for the call statement, not return statement">
-      <change afterPath="$PROJECT_DIR$/test.dds" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tokenizer.py" beforeDir="false" afterPath="$PROJECT_DIR$/tokenizer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/translator.py" beforeDir="false" afterPath="$PROJECT_DIR$/translator.py" afterDir="false" />
-    </list>
+    <list default="true" id="b66d2a0e-bdba-45dd-a6c7-b51a60e8374b" name="Changes" comment="improved function parsing by implementing check stages" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -151,7 +146,21 @@
       <option name="project" value="LOCAL" />
       <updated>1675799766129</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="improved the function parser by doing an alphanumeric check on the name, validating parameter types, removing the dependance on whitespace when identifying the parameter name and type, replacing 'returns' with '~', and detecting mismatched curly brackets">
+      <created>1675857356186</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1675857356186</updated>
+    </task>
+    <task id="LOCAL-00015" summary="improved function parsing by implementing check stages">
+      <created>1675858660406</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1675858660406</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -187,6 +196,8 @@
     <MESSAGE value="added special edge case for when a return statement is just the keyword 'return' and nothing else" />
     <MESSAGE value="added support for function calls within a return statement" />
     <MESSAGE value="wait, i meant for the call statement, not return statement" />
-    <option name="LAST_COMMIT_MESSAGE" value="wait, i meant for the call statement, not return statement" />
+    <MESSAGE value="improved the function parser by doing an alphanumeric check on the name, validating parameter types, removing the dependance on whitespace when identifying the parameter name and type, replacing 'returns' with '~', and detecting mismatched curly brackets" />
+    <MESSAGE value="improved function parsing by implementing check stages" />
+    <option name="LAST_COMMIT_MESSAGE" value="improved function parsing by implementing check stages" />
   </component>
 </project>
