@@ -4,8 +4,8 @@ from translator import translate_to_python
 from tokenizer import tokenize
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-dks', '--dks_file', required=True)
-parser.add_argument('-out', '--out_file')
+parser.add_argument('-dks', '--dks_file', metavar='<path>', required=True)
+parser.add_argument('-out', '--out_file', metavar='<path>')
 args = vars(parser.parse_args())
 
 dks_file = args['dks_file']
