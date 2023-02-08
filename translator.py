@@ -108,7 +108,12 @@ def convert_variable(token: Token) -> list:
     :param token:
     :return:
     """
-    python_string = token.attributes["variable_name"] + token.attributes["operator"] + convert_token(token.attributes["variable_value"])[0]
+    python_string = token.attributes["variable_name"]
+    operator = token.attributes["operator"]
+    if operator == "<<":
+        python_string += " = input(" + convert_token(token.attributes["variable_value"])[0] + ")"
+    else:
+        python_string += f" {operator} " + convert_token(token.attributes["variable_value"])[0]
     return [python_string]
 
 
