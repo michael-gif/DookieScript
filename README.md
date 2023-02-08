@@ -26,6 +26,8 @@ My own programming language
 ### Language syntax
 Imports
 ```
+// all python modules are supported.
+
 include module_name
 include math
 include pygame
@@ -76,11 +78,17 @@ query (condition) executes {
 
 Loops
 ```
-// only supports ++ and --
+// for loop. only supports ++ and --
 repeat (<int> start = 0, <int> stop = 10, start++) {
     // logic
 }
 
+// for-each loop. not implemented yet
+repeat (<datatype> element :=: iterable) {
+    // logic
+}
+
+// while loop
 repeat query (condition) executes {
     // logic
 }
@@ -117,6 +125,8 @@ Write your doodoo file, saving it with `.dks` as the extension. Example:
 
 `numbergame.dks`
 ```
+include random
+
 // computer picks random number from 1 to 10, player picks random number from 1 to 10, whoever picked highest wins.
 
 '''
@@ -166,7 +176,7 @@ reusable main() return void {
 call main()
 ```
 
-Then run the DookieScript compiler `dksc.py`, giving it the script file as the first argument:  
+Then run the DookieScript compiler `dksc.py`, passing the script file to `-dks <path>`:  
 `python -m dksc -dks numbergame.dks`
 
 You can specify an output file with `-out <path>` or `--out_file <path>`:  
