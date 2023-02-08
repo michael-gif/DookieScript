@@ -565,6 +565,8 @@ def tokenize(content: str) -> List[Token]:
         'reusable ': reusable_parser,
         'call ': call_parser,
         'static ': static_parser,
+        'container': container_parser,
+        'multipart': multipart_parser,
         'repeat ': repeat_parser,
         'query ': query_parser,
         'return ': return_parser

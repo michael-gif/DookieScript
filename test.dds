@@ -1,0 +1,5 @@
+reusable function(<string> name) ~ <int> {
+    call print(name)
+}
+
+container <string> value << "enter name"
