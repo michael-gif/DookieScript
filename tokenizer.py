@@ -1,5 +1,4 @@
 from token import Token
-from typing import Tuple, List
 
 
 def isValidType(t: str) -> bool:
@@ -12,7 +11,7 @@ def isValidType(t: str) -> bool:
     return t in valid_types
 
 
-def include_parser(raw_text: str) -> Tuple[str, Token]:
+def include_parser(raw_text: str) -> tuple[str, None] | tuple[str, Token]:
     """
     | Parses imports
     :param raw_text:
@@ -39,7 +38,7 @@ def include_parser(raw_text: str) -> Tuple[str, Token]:
     return remaining_text, token
 
 
-def reusable_parser(raw_text: str) -> Tuple[str, Token]:
+def reusable_parser(raw_text: str) -> tuple[str, None] | tuple[str, Token]:
     """
     | Parses function declarations
     :param raw_text:
@@ -80,7 +79,7 @@ def reusable_parser(raw_text: str) -> Tuple[str, Token]:
             continue
 
         if check_stage == 1:
-            if scanned.endswith(")") and not "parameters" in attribs:
+            if scanned.endswith(")") and "parameters" not in attribs:
                 attribs["parameters"] = []
                 params_string = scanned[:-1].strip()
                 if not params_string:
@@ -103,7 +102,7 @@ def reusable_parser(raw_text: str) -> Tuple[str, Token]:
             index += 1
             continue
 
-        if check_stage == 2 :
+        if check_stage == 2:
             # enforce ~
             if not scanned:
                 index += 1
@@ -135,7 +134,7 @@ def reusable_parser(raw_text: str) -> Tuple[str, Token]:
                     first_curly_bracket_index = index
             if scanned.endswith("}"):
                 curly_bracket_counter -= 1
-            if found_code_block and not curly_bracket_counter and not "code_block" in attribs:
+            if found_code_block and not curly_bracket_counter and "code_block" not in attribs:
                 code_block = scanned[:-1].lstrip()
                 attribs["code_block"] = code_block
                 break
@@ -152,7 +151,7 @@ def reusable_parser(raw_text: str) -> Tuple[str, Token]:
     return remaining_text, token
 
 
-def call_parser(raw_text: str) -> Tuple[str, Token]:
+def call_parser(raw_text: str) -> tuple[str, None] | tuple[str, Token]:
     """
     | Parses function calls
     :param raw_text:
@@ -201,7 +200,7 @@ def call_parser(raw_text: str) -> Tuple[str, Token]:
     return remaining_text, token
 
 
-def query_parser(raw_text: str) -> Tuple[str, Token]:
+def query_parser(raw_text: str) -> tuple[str, None] | tuple[str, Token]:
     """
     | Parses if statements
     :param raw_text:
@@ -221,7 +220,7 @@ def query_parser(raw_text: str) -> Tuple[str, Token]:
         char = raw_text[index]
         scanned += char
         scanned = scanned.lstrip()
-        if scanned.endswith(")") and not "condition" in attribs:
+        if scanned.endswith(")") and "condition" not in attribs:
             condition = scanned[1:-1]
             attribs["condition"] = condition
             scanned = ""
@@ -250,7 +249,7 @@ def query_parser(raw_text: str) -> Tuple[str, Token]:
     return remaining_text, token
 
 
-def repeat_parser(raw_text: str) -> Tuple[str, Token]:
+def repeat_parser(raw_text: str) -> tuple[str, None] | tuple[str, Token]:
     """
     | Parses for loops
     :param raw_text:
@@ -275,7 +274,7 @@ def repeat_parser(raw_text: str) -> Tuple[str, Token]:
         char = raw_text[index]
         scanned += char
         scanned = scanned.lstrip()
-        if scanned.startswith("(") and scanned.endswith(")") and not "start_stop_step" in attribs:
+        if scanned.startswith("(") and scanned.endswith(")") and "start_stop_step" not in attribs:
             start_stop_step = scanned[:-1]
             parts = [p.strip() for p in start_stop_step.split(",")]
             start = parts[0].split(">")[1].strip()
@@ -303,7 +302,7 @@ def repeat_parser(raw_text: str) -> Tuple[str, Token]:
     return remaining_text, token
 
 
-def repeat_query_parser(raw_text: str) -> Tuple[str, Token]:
+def repeat_query_parser(raw_text: str) -> tuple[str, None] | tuple[str, Token]:
     """
     | Parses while loops
     :param raw_text:
@@ -323,7 +322,7 @@ def repeat_query_parser(raw_text: str) -> Tuple[str, Token]:
         char = raw_text[index]
         scanned += char
         scanned = scanned.lstrip()
-        if scanned.startswith("(") and scanned.endswith(")") and not "condition" in attribs:
+        if scanned.startswith("(") and scanned.endswith(")") and "condition" not in attribs:
             condition = scanned[1:-1]
             attribs["condition"] = condition
             scanned = ""
@@ -373,7 +372,7 @@ def value_parser(raw_text: str) -> Token:
         return token
 
 
-def container_parser(raw_text: str) -> Tuple[str, Token]:
+def container_parser(raw_text: str) -> tuple[str, None] | tuple[str, Token]:
     """
     | Parses variables
     :param raw_text:
@@ -434,7 +433,7 @@ def container_parser(raw_text: str) -> Tuple[str, Token]:
     return remaining_text, token
 
 
-def multipart_parser(raw_text: str) -> Tuple[str, Token]:
+def multipart_parser(raw_text: str) -> tuple[str, None] | tuple[str, Token]:
     """
     | Parses arrays
     :param raw_text:
@@ -499,7 +498,7 @@ def multipart_parser(raw_text: str) -> Tuple[str, Token]:
     return remaining_text, token
 
 
-def static_parser(raw_text: str) -> Tuple[str, Token]:
+def static_parser(raw_text: str) -> tuple[str, None] | tuple[str, Token]:
     """
     | Parses constant variables and arrays, prefixed with 'static'
     :param raw_text:
@@ -519,7 +518,7 @@ def static_parser(raw_text: str) -> Tuple[str, Token]:
     return remaining_text, token
 
 
-def return_parser(raw_text: str) -> Tuple[str, Token]:
+def return_parser(raw_text: str) -> tuple[str, None] | tuple[str, Token]:
     """
     | Parses return statements
     :param raw_text:
@@ -537,7 +536,7 @@ def return_parser(raw_text: str) -> Tuple[str, Token]:
     while index < len(raw_text):
         char = raw_text[index]
         scanned += char
-        if scanned.endswith("\n") and not "return_value" in attribs:
+        if scanned.endswith("\n") and "return_value" not in attribs:
             attribs["return_value"] = scanned[:-1]
             break
         index += 1
@@ -548,7 +547,7 @@ def return_parser(raw_text: str) -> Tuple[str, Token]:
     return remaining_text, token
 
 
-def tokenize(content: str) -> List[Token]:
+def tokenize(content: str) -> list[Token]:
     """
     | Tokenizes a code block
     | Explanation:

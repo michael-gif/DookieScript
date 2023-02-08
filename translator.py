@@ -5,9 +5,10 @@ from typing import List
 from token import Token
 
 
-def translate_to_python(tokens: List[Token], destination: str) -> str:
+def translate_to_python(tokens: List[Token], destination: str) -> None:
     """
     | Convert a tree of tokens into python code
+    :param destination:
     :param tokens:
     :return:
     """
@@ -60,7 +61,7 @@ def convert_import(token: Token) -> list[str]:
 def convert_type(dds_type: str) -> str:
     """
     | Convert a dds type into a python type
-    :param token:
+    :param dds_type:
     :return:
     """
     mappings = {
