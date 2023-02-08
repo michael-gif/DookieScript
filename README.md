@@ -14,12 +14,13 @@ My own programming language
 - hashmap (not implemented)
 
 ### Operators
-- add/concat -> +
-- subtract -> -
-- multiply -> *
-- divide -> /
-- remainder -> //
-- modulo -> %
+- add/concat -> `+`
+- subtract -> `-`
+- multiply -> `*`
+- divide -> `/`
+- remainder -> `//`
+- modulo -> `%`
+- input -> `<<`
 
 ### Language syntax
 Imports
@@ -34,6 +35,12 @@ container <int> age = 8
 
 // static means constant. the variable value can't change
 static container <string> name = "foo";
+
+// if you want to do input, you have two options
+container <string> fruit = call input("give a fruit")
+container <string> fruit << "give a fruit"
+
+// the second option uses the '<<' operator, which is just shorter
 ```
 Arrays
 ```
