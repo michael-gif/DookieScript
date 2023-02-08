@@ -439,33 +439,56 @@ def multipart_parser(raw_text: str) -> Tuple[str, Token]:
     :param raw_text:
     :return:
     """
-    raw_text = raw_text.split("multipart ", 1)[1]
+    if raw_text.lstrip().startswith("multipart "):
+        raw_text = raw_text.lstrip().split("multipart ", 1)[1]
+    else:
+        return "", None
 
     token = Token("multipart")
     attribs = {}
     index = 0
+    check_stage = 0
     scanned = ""
     while index < len(raw_text):
         char = raw_text[index]
         scanned += char
 
-        if scanned.endswith(">"):
-            attribs["datatype"] = scanned.strip()
-            scanned = ""
+        if check_stage == 0:
+            if not scanned.startswith("<"):
+                raise SyntaxError(f"expected the start of a datatype\nHere --> {raw_text[index:]}")
+            if scanned.endswith(">"):
+                datatype = scanned.strip()
+                if isValidType(datatype):
+                    attribs["datatype"] = datatype
+                else:
+                    raise SyntaxError(f"invalid datatype: {datatype}\nHere --> {raw_text}")
+                scanned = ""
+                check_stage += 1
+            index += 1
+            continue
 
-        if scanned.endswith("="):
-            variable_name = scanned[:-1].strip()
-            attribs["array_name"] = variable_name
-            scanned = ""
+        if check_stage == 1:
+            if scanned.endswith("="):
+                array_name = scanned[:-1].strip()
+                attribs["array_name"] = array_name
+                scanned = ""
+                check_stage += 1
+            index += 1
+            continue
 
-        if scanned.endswith("{"):
-            scanned = ""
+        if check_stage == 2:
+            if scanned.endswith("{"):
+                scanned = ""
+                check_stage += 1
+            index += 1
+            continue
 
-        if scanned.endswith("}"):
-            contents_string = scanned[:-1].strip()
-            elements = [e.strip() for e in contents_string.split(",")]
-            attribs["array_values"] = elements
-            break
+        if check_stage == 3:
+            if scanned.endswith("}"):
+                contents_string = scanned[:-1].strip()
+                elements = [e.strip() for e in contents_string.split(",")]
+                attribs["array_values"] = elements
+                break
 
         index += 1
 

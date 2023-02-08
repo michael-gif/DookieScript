@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b66d2a0e-bdba-45dd-a6c7-b51a60e8374b" name="Changes" comment="improved function parsing by implementing check stages" />
+    <list default="true" id="b66d2a0e-bdba-45dd-a6c7-b51a60e8374b" name="Changes" comment="updated README.md to include &lt;&lt; operator">
+      <change beforePath="$PROJECT_DIR$/test.dds" beforeDir="false" afterPath="$PROJECT_DIR$/test.dds" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tokenizer.py" beforeDir="false" afterPath="$PROJECT_DIR$/tokenizer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/translator.py" beforeDir="false" afterPath="$PROJECT_DIR$/translator.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -160,7 +164,42 @@
       <option name="project" value="LOCAL" />
       <updated>1675858660406</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="calling a function now ignores whitespace between function name and parameters">
+      <created>1675859123929</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1675859123929</updated>
+    </task>
+    <task id="LOCAL-00017" summary="functions in python output now get properly type hinted">
+      <created>1675859211306</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1675859211306</updated>
+    </task>
+    <task id="LOCAL-00018" summary="variables now have datatype validation, and check stages for each part of the statement">
+      <created>1675860233232</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1675860233232</updated>
+    </task>
+    <task id="LOCAL-00019" summary="added &lt;&lt; operator as a shorthand version for calling input">
+      <created>1675860718160</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1675860718160</updated>
+    </task>
+    <task id="LOCAL-00020" summary="updated README.md to include &lt;&lt; operator">
+      <created>1675860832454</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1675860832454</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -198,6 +237,11 @@
     <MESSAGE value="wait, i meant for the call statement, not return statement" />
     <MESSAGE value="improved the function parser by doing an alphanumeric check on the name, validating parameter types, removing the dependance on whitespace when identifying the parameter name and type, replacing 'returns' with '~', and detecting mismatched curly brackets" />
     <MESSAGE value="improved function parsing by implementing check stages" />
-    <option name="LAST_COMMIT_MESSAGE" value="improved function parsing by implementing check stages" />
+    <MESSAGE value="calling a function now ignores whitespace between function name and parameters" />
+    <MESSAGE value="functions in python output now get properly type hinted" />
+    <MESSAGE value="variables now have datatype validation, and check stages for each part of the statement" />
+    <MESSAGE value="added &lt;&lt; operator as a shorthand version for calling input" />
+    <MESSAGE value="updated README.md to include &lt;&lt; operator" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated README.md to include &lt;&lt; operator" />
   </component>
 </project>

@@ -1,1 +1,1 @@
-static container <string> name = "foo"
+static multipart <string> name = {1,2}

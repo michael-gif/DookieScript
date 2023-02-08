@@ -15,7 +15,6 @@ def translate_to_python(tokens: List[Token], destination: str) -> str:
     lines = []
     for t in tokens:
         lines += convert_token(t)
-    print(lines)
     with open(destination, 'w') as f:
         for line in lines:
             f.write(line + "\n")
@@ -35,6 +34,7 @@ def convert_token(token: Token) -> list:
         'include': convert_import,
         'reusable': convert_function,
         'container': convert_variable,
+        'multipart': convert_array,
         'call': convert_call,
         'repeat': convert_for,
         'repeat_query': convert_while,
@@ -115,6 +115,15 @@ def convert_variable(token: Token) -> list:
     else:
         python_string += f" {operator} " + convert_token(token.attributes["variable_value"])[0]
     return [python_string]
+
+
+def convert_array(token: Token) -> list:
+    """
+    | Convert array name and values into a python list
+    :param token:
+    :return:
+    """
+    return [token.attributes["array_name"] + " = [" + ', '.join(token.attributes["array_values"]) + "]"]
 
 
 def convert_call(token: Token) -> list[str]:
