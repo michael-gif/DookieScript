@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b66d2a0e-bdba-45dd-a6c7-b51a60e8374b" name="Changes" comment="fixed issue with index not being reset after content is parsed" />
+    <list default="true" id="b66d2a0e-bdba-45dd-a6c7-b51a60e8374b" name="Changes" comment="added \n to end of code if there isn't one present already">
+      <change beforePath="$PROJECT_DIR$/test.dds" beforeDir="false" afterPath="$PROJECT_DIR$/test.dds" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -209,7 +211,28 @@
       <option name="project" value="LOCAL" />
       <updated>1675861904301</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="removed debug code">
+      <created>1675862023137</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1675862023137</updated>
+    </task>
+    <task id="LOCAL-00024" summary="added container and multipart to parser dictionary">
+      <created>1675862309259</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1675862309259</updated>
+    </task>
+    <task id="LOCAL-00025" summary="added \n to end of code if there isn't one present already">
+      <created>1675862388299</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1675862388299</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -254,6 +277,9 @@
     <MESSAGE value="updated README.md to include &lt;&lt; operator" />
     <MESSAGE value="added array support" />
     <MESSAGE value="fixed issue with index not being reset after content is parsed" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed issue with index not being reset after content is parsed" />
+    <MESSAGE value="removed debug code" />
+    <MESSAGE value="added container and multipart to parser dictionary" />
+    <MESSAGE value="added \n to end of code if there isn't one present already" />
+    <option name="LAST_COMMIT_MESSAGE" value="added \n to end of code if there isn't one present already" />
   </component>
 </project>
