@@ -85,7 +85,7 @@ def convert_function(token: Token) -> list[str]:
     function_name = token.attributes["function_name"]
     declaration += "def " + function_name + "("
     parameters = token.attributes["parameters"]
-    parameters_string = [p_name for p_name, p_type in parameters]
+    parameters_string = [p_name + ": " + convert_type(p_type) for p_name, p_type in parameters]
     declaration += ', '.join(parameters_string) + ") -> " + convert_type(token.attributes["return_type"]) + ":"
     lines.append(declaration)
 
