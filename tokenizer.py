@@ -653,7 +653,6 @@ def tokenize(content: str) -> List[Token]:
                 text, token = parsers[key](key + content[index + 1:])
                 if token:
                     content = text
-                    print("content: " + content)
                     tokens.append(token)
                     scanned = ""
                     index = 0

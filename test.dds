@@ -1,2 +1,0 @@
-static container <string> name = "a"
-call print(name)
