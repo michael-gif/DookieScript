@@ -7,7 +7,7 @@ def isValidType(t: str) -> bool:
     :param t:
     :return:
     """
-    valid_types = ["<int>", "<float>", "<string>", "<boolean>"]
+    valid_types = ["<int>", "<float>", "<string>", "<boolean>", "<void>"]
     return t in valid_types
 
 

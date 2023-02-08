@@ -21,7 +21,7 @@ def translate_to_python(tokens: List[Token], destination: str) -> None:
             f.write(line + "\n")
     print("[INFO] Executing python code\n")
     subprocess.call(["python", "-m", destination[:-3]], shell=True)
-    os.remove(destination)
+    #os.remove(destination)
 
 
 def convert_token(token: Token) -> list:
@@ -68,7 +68,8 @@ def convert_type(dks_type: str) -> str:
         '<int>': 'int',
         '<float>': 'float',
         '<string>': 'str',
-        '<boolean>': 'bool'
+        '<boolean>': 'bool',
+        '<void>': 'None'
     }
     if dks_type not in mappings:
         raise KeyError(f"could not map dks type to python type: {dks_type}")

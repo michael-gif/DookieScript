@@ -2,10 +2,11 @@
 My own programming language
 
 ### Available datatypes
-- int
-- float
-- string
-- boolean
+- int `<int>`
+- float `<float>`
+- string `<string>`
+- boolean `<boolean>`
+- void `<void>`
 
 ### Available datastructures
 - array
