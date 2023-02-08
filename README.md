@@ -1,4 +1,4 @@
-# DooDooScript
+# DookieScript
 My own programming language
 
 ### Available datatypes
@@ -112,9 +112,9 @@ this is a multiline comment
 ```
 
 ## Usage
-Write your doodoo file, saving it with `.dds` as the extension. Example:
+Write your doodoo file, saving it with `.dks` as the extension. Example:
 
-`numbergame.dds`
+`numbergame.dks`
 ```
 // computer picks random number from 1 to 10, player picks random number from 1 to 10, whoever picked highest wins.
 
@@ -165,7 +165,7 @@ reusable main() return void {
 call main()
 ```
 
-Then run main.py, giving it the filename as the first argument:
-`python -m main.py -dds numbergame.dds`
+Then run the compiler dksc.py, giving it the filename as the first argument:
+`python -m dksc -dks numbergame.dks`
 
-The doodoo file will be tokenized, converted to python, and run.
+The dookie file will be tokenized, converted to python, and run.

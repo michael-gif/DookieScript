@@ -58,10 +58,10 @@ def convert_import(token: Token) -> list[str]:
     return ["import " + token.attributes["module_name"]]
 
 
-def convert_type(dds_type: str) -> str:
+def convert_type(dks_type: str) -> str:
     """
-    | Convert a dds type into a python type
-    :param dds_type:
+    | Convert a dks type into a python type
+    :param dks_type:
     :return:
     """
     mappings = {
@@ -70,9 +70,9 @@ def convert_type(dds_type: str) -> str:
         '<string>': 'str',
         '<boolean>': 'bool'
     }
-    if dds_type not in mappings:
-        raise KeyError(f"could not map dds type to python type: {dds_type}")
-    return mappings[dds_type]
+    if dks_type not in mappings:
+        raise KeyError(f"could not map dks type to python type: {dks_type}")
+    return mappings[dks_type]
 
 
 def convert_function(token: Token) -> list[str]:
