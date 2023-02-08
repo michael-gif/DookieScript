@@ -1,4 +1,4 @@
-reusable foobar(<int> param1, <string> param2) ~ <boolean>{
+reusable foobar(<int> param1, <string> param2) ~ <boolean> {
     // logic
     return true;
 }
