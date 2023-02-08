@@ -108,7 +108,7 @@ def convert_variable(token: Token) -> list:
     :param token:
     :return:
     """
-    python_string = token.attributes["variable_name"] + " = " + convert_token(token.attributes["variable_value"])[0]
+    python_string = token.attributes["variable_name"] + token.attributes["operator"] + convert_token(token.attributes["variable_value"])[0]
     return [python_string]
 
 

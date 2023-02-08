@@ -2,6 +2,16 @@ from token import Token
 from typing import Tuple, List
 
 
+def isValidType(t: str) -> bool:
+    """
+    | Validate the given type
+    :param t:
+    :return:
+    """
+    valid_types = ["<int>", "<float>", "<string>", "<boolean>"]
+    return t in valid_types
+
+
 def include_parser(raw_text: str) -> Tuple[str, Token]:
     """
     | Parses imports
@@ -35,10 +45,6 @@ def reusable_parser(raw_text: str) -> Tuple[str, Token]:
     :param raw_text:
     :return:
     """
-
-    def isValidParamType(param: str) -> bool:
-        valid_params = ["<int>", "<float>", "<string>", "<boolean>"]
-        return param in valid_params
 
     if raw_text.lstrip().startswith("reusable "):
         raw_text = raw_text.lstrip().split("reusable ", 1)[1]
@@ -88,7 +94,7 @@ def reusable_parser(raw_text: str) -> Tuple[str, Token]:
                     param_type = split_parts[0] + ">"
                     param_name = split_parts[1].strip()
                     # validate the parameter type
-                    if isValidParamType(param_type):
+                    if isValidType(param_type):
                         attribs["parameters"].append((param_name, param_type))
                     else:
                         raise SyntaxError(f"invalid parameter type '{param_type}'\nHere --> ({params_string})")
@@ -372,35 +378,53 @@ def container_parser(raw_text: str) -> Tuple[str, Token]:
     :param raw_text:
     :return:
     """
-    raw_text = raw_text.split("container ", 1)[1]
-
+    if raw_text.lstrip().startswith("container "):
+        raw_text = raw_text.lstrip().split("container ", 1)[1]
+    else:
+        return "", None
     token = Token("container")
     attribs = {}
     index = 0
+    check_stage = 0
     scanned = ""
     while index < len(raw_text):
         char = raw_text[index]
         scanned += char
+        scanned = scanned.lstrip()
 
-        if scanned.endswith(">"):
-            attribs["datatype"] = scanned.strip()
-            scanned = ""
+        if check_stage == 0:
+            if not scanned.startswith("<"):
+                raise SyntaxError(f"expected the start of a datatype\nHere --> {raw_text[index:]}")
+            if scanned.endswith(">"):
+                datatype = scanned.strip()
+                if isValidType(datatype):
+                    attribs["datatype"] = datatype
+                else:
+                    raise SyntaxError(f"invalid datatype: {datatype}\nHere --> {raw_text}")
+                scanned = ""
+                check_stage += 1
+            index += 1
+            continue
 
-        if scanned.endswith("="):
-            variable_name = scanned[:-1].strip()
-            attribs["variable_name"] = variable_name
-            scanned = ""
+        if check_stage == 1:
+            operators = ["=", "+", "-", "*", "/", "<<"]
+            for op in operators:
+                if scanned.endswith(op):
+                    variable_name = scanned[:-len(op)].strip()
+                    attribs["variable_name"] = variable_name
+                    attribs["operator"] = op
+                    scanned = ""
+                    check_stage += 1
+                    break
+            index += 1
+            continue
 
-        if scanned.endswith("<<"):
-            variable_name = scanned[:-2].strip()
-            attribs["variable_name"] = variable_name
-            scanned = ""
-
-        if scanned.endswith("\n"):
-            variable_value = scanned[:-1].strip()
-            tokenized_value = value_parser(variable_value)
-            attribs["variable_value"] = tokenized_value
-            break
+        if check_stage == 2:
+            if scanned.endswith("\n"):
+                variable_value = scanned[:-1].strip()
+                tokenized_value = value_parser(variable_value)
+                attribs["variable_value"] = tokenized_value
+                break
 
         index += 1
 
