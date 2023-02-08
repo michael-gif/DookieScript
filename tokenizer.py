@@ -158,6 +158,7 @@ def call_parser(raw_text: str) -> Tuple[str, Token]:
     :param raw_text:
     :return:
     """
+    print(raw_text)
     if raw_text.lstrip().startswith("call "):
         raw_text = raw_text.lstrip().split("call ", 1)[1]
     else:
@@ -351,7 +352,7 @@ def value_parser(raw_text: str) -> Token:
     """
     if raw_text.startswith('"') and raw_text.endswith('"'):
         token = Token("string")
-        token.attributes["value"] = f'"{raw_text[1:-1]}"'
+        token.attributes["value"] = raw_text
         return token
     if raw_text in ["true", "false"]:
         token = Token("boolean")
@@ -452,6 +453,7 @@ def multipart_parser(raw_text: str) -> Tuple[str, Token]:
     while index < len(raw_text):
         char = raw_text[index]
         scanned += char
+        scanned = scanned.lstrip()
 
         if check_stage == 0:
             if not scanned.startswith("<"):
@@ -644,15 +646,21 @@ def tokenize(content: str) -> List[Token]:
             continue
 
         # check the characters already scanned to see if they match a keyword, if they do, call the relevant parser
+        found_key = False
         for key in parser_keys:
             if scanned.startswith(key):
+                found_key = True
                 text, token = parsers[key](key + content[index + 1:])
                 if token:
                     content = text
+                    print("content: " + content)
                     tokens.append(token)
                     scanned = ""
                     index = 0
-                    continue
+                    break
+
+        if found_key:
+            continue
 
         index += 1
 

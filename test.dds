@@ -1,1 +1,2 @@
-static multipart <string> name = {1,2}
+static container <string> name = "a"
+call print(name)
