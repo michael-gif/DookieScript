@@ -1,4 +1,9 @@
-from token import Token
+import logging
+
+from token_class import Token
+
+
+logging.basicConfig(format="SyntaxError: %(message)s")
 
 
 def isValidType(t: str) -> bool:
@@ -68,13 +73,15 @@ def reusable_parser(raw_text: str) -> tuple[str, None] | tuple[str, Token]:
                 potential_function_name = scanned[:-1]
                 # validate the function name
                 if potential_function_name[0].isnumeric():
-                    raise SyntaxError(f"function names can't start with a number\nHere --> {scanned}")
+                    logging.error(f"function names can't start with a number\nhere --> {scanned}")
+                    quit()
                 if potential_function_name.isalnum():
                     attribs["function_name"] = potential_function_name
                     scanned = ""
                     check_stage += 1
                 else:
-                    raise SyntaxError(f"function names can only contain letters and numbers\nHere --> {scanned}")
+                    logging.error(f"function names can only contain letters and numbers\nhere --> {scanned}")
+                    quit()
             index += 1
             continue
 
@@ -96,7 +103,8 @@ def reusable_parser(raw_text: str) -> tuple[str, None] | tuple[str, Token]:
                     if isValidType(param_type):
                         attribs["parameters"].append((param_name, param_type))
                     else:
-                        raise SyntaxError(f"invalid parameter type '{param_type}'\nHere --> ({params_string})")
+                        logging.error(f"invalid parameter type '{param_type}'\nhere --> ({params_string})")
+                        quit()
                 scanned = ""
                 check_stage += 1
             index += 1
@@ -109,7 +117,8 @@ def reusable_parser(raw_text: str) -> tuple[str, None] | tuple[str, Token]:
                 continue
             if not checked_for_tilda:
                 if scanned[0] != "~":
-                    raise SyntaxError(f"expected '~', instead got '{scanned[0]}'\nHere --> ) {scanned}")
+                    logging.error(f"expected '~', instead got '{scanned[0]}'\nhere --> {raw_text[:index + 1]}")
+                    quit()
                 else:
                     scanned = ""
                     check_stage += 1
@@ -142,7 +151,8 @@ def reusable_parser(raw_text: str) -> tuple[str, None] | tuple[str, Token]:
 
     # if we get to the end of the given text, and the bracket counter isn't 0, then there is a mismatched bracket
     if curly_bracket_counter:
-        raise SyntaxError(f"could not find closing bracket\nHere --> {raw_text[first_curly_bracket_index:]}")
+        logging.error(f"could not find closing bracket\nhere --> {raw_text[first_curly_bracket_index:]}")
+        quit()
 
     attribs["code_block"] = tokenize(attribs["code_block"])
 
@@ -336,7 +346,8 @@ def repeat_query_parser(raw_text: str) -> tuple[str, None] | tuple[str, Token]:
         if check_stage == 1:
             if scanned.endswith("{"):
                 if not found_code_block and scanned[:-1].strip() != "executes":
-                    raise SyntaxError(f"missing keyword executes\nhere --> {scanned}")
+                    logging.error(f"missing keyword executes\nhere --> {scanned}")
+                    quit()
                 bracket_counter += 1
                 found_code_block = True
             if scanned.endswith("}"):
@@ -406,13 +417,15 @@ def container_parser(raw_text: str) -> tuple[str, None] | tuple[str, Token]:
 
         if check_stage == 0:
             if not scanned.startswith("<"):
-                raise SyntaxError(f"expected the start of a datatype\nHere --> {raw_text[index:]}")
+                logging.error(f"expected the start of a datatype\nhere --> {raw_text[index:]}")
+                quit()
             if scanned.endswith(">"):
                 datatype = scanned.strip()
                 if isValidType(datatype):
                     attribs["datatype"] = datatype
                 else:
-                    raise SyntaxError(f"invalid datatype: {datatype}\nHere --> {raw_text}")
+                    logging.error(f"invalid datatype: {datatype}\nhere --> {raw_text}")
+                    quit()
                 scanned = ""
                 check_stage += 1
             index += 1
@@ -468,13 +481,15 @@ def multipart_parser(raw_text: str) -> tuple[str, None] | tuple[str, Token]:
 
         if check_stage == 0:
             if not scanned.startswith("<"):
-                raise SyntaxError(f"expected the start of a datatype\nHere --> {raw_text[index:]}")
+                logging.error(f"expected the start of a datatype\nhere --> {raw_text[index:]}")
+                quit()
             if scanned.endswith(">"):
                 datatype = scanned.strip()
                 if isValidType(datatype):
                     attribs["datatype"] = datatype
                 else:
-                    raise SyntaxError(f"invalid datatype: {datatype}\nHere --> {raw_text}")
+                    logging.error(f"invalid datatype: {datatype}\nhere --> {raw_text}")
+                    quit()
                 scanned = ""
                 check_stage += 1
             index += 1
