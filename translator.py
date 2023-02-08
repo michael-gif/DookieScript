@@ -1,7 +1,7 @@
 import subprocess
 import os
 
-from typing import List, Any
+from typing import List
 from token import Token
 
 
@@ -20,7 +20,7 @@ def translate_to_python(tokens: List[Token], destination: str) -> str:
             f.write(line + "\n")
     print("[INFO] Executing python code\n")
     subprocess.call(["python", "-m", destination[:-3]], shell=True)
-    #os.remove(destination)
+    os.remove(destination)
 
 
 def convert_token(token: Token) -> list:
