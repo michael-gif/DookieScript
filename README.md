@@ -20,7 +20,7 @@ My own programming language
 - divide -> `/`
 - remainder -> `//`
 - modulo -> `%`
-- input -> `<<`
+- shorthand input -> `<<`
 
 ### Language syntax
 Imports
@@ -165,7 +165,7 @@ reusable main() return void {
 call main()
 ```
 
-Then run the compiler dksc.py, giving it the filename as the first argument:
+Then run the DookieScript compiler `dksc.py`, giving it the script file as the first argument:
 `python -m dksc -dks numbergame.dks`
 
 The dookie file will be tokenized, converted to python, and run.
