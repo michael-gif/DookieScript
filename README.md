@@ -166,10 +166,10 @@ reusable main() return void {
 call main()
 ```
 
-Then run the DookieScript compiler `dksc.py`, giving it the script file as the first argument:
+Then run the DookieScript compiler `dksc.py`, giving it the script file as the first argument:  
 `python -m dksc -dks numbergame.dks`
 
-You can specify an output file with `-out <path>` or `--out_file <path>`
+You can specify an output file with `-out <path>` or `--out_file <path>`:  
 `python -m dksc -dks numbergame.dks -out poop.py`
 
 The dookie file will be tokenized, converted to python, and run.
