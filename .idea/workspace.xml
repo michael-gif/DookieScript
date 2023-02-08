@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b66d2a0e-bdba-45dd-a6c7-b51a60e8374b" name="Changes" comment="removed debug code">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tokenizer.py" beforeDir="false" afterPath="$PROJECT_DIR$/tokenizer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/translator.py" beforeDir="false" afterPath="$PROJECT_DIR$/translator.py" afterDir="false" />
-    </list>
+    <list default="true" id="b66d2a0e-bdba-45dd-a6c7-b51a60e8374b" name="Changes" comment="while loop parser now raises a syntax error if you forget the keyword 'executes'" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -27,7 +23,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/test.py" />
   </component>
-  <component name="RunManager" selected="Python.test">
+  <component name="RunManager" selected="Python.main">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="DooDooScript" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -287,7 +283,14 @@
       <option name="project" value="LOCAL" />
       <updated>1675864766007</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="while loop parser now raises a syntax error if you forget the keyword 'executes'">
+      <created>1675865834722</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1675865834722</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -310,7 +313,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="added more descriptive documentation to the tokenizer" />
     <MESSAGE value="updated for loop in README.md" />
     <MESSAGE value="added for loop to tokenizer.py" />
     <MESSAGE value="added for loop to translator.py" />
@@ -335,6 +337,7 @@
     <MESSAGE value="cleanup" />
     <MESSAGE value="fixed most warnings" />
     <MESSAGE value="removed debug code" />
-    <option name="LAST_COMMIT_MESSAGE" value="removed debug code" />
+    <MESSAGE value="while loop parser now raises a syntax error if you forget the keyword 'executes'" />
+    <option name="LAST_COMMIT_MESSAGE" value="while loop parser now raises a syntax error if you forget the keyword 'executes'" />
   </component>
 </project>

@@ -263,6 +263,8 @@ def repeat_parser(raw_text: str) -> tuple[str, None] | tuple[str, Token]:
         text, token = repeat_query_parser("repeat " + raw_text)
         return text, token
 
+    # TODO: write the code to parse a for-in statement
+
     token = Token("repeat")
     attribs = {}
     index = 0
