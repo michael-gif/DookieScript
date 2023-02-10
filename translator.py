@@ -21,7 +21,7 @@ def translate_to_python(tokens: List[Token], destination: str) -> None:
             f.write(line + "\n")
     print("[INFO] Executing python code\n")
     subprocess.call(["python", "-m", destination[:-3]], shell=True)
-    #os.remove(destination)
+    os.remove(destination)
 
 
 def convert_token(token: Token) -> list:
