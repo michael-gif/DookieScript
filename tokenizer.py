@@ -339,14 +339,22 @@ def repeat_query_parser(raw_text: str) -> tuple[str, None] | tuple[str, Token]:
     index = 0
     scanned = ""
     found_code_block = False
+    found_condition = False
     curly_bracket_counter = 0
+    bracket_counter = 0
     check_stage = 0
     while index < len(raw_text):
         char = raw_text[index]
         scanned += char
         scanned = scanned.lstrip()
         if check_stage == 0:
-            if scanned.startswith("(") and scanned.endswith(")") and "condition" not in attribs:
+            if scanned.endswith("("):
+                bracket_counter += 1
+                found_condition = True
+            if scanned.endswith(")"):
+                bracket_counter -= 1
+                found_condition = False
+            if found_condition and not bracket_counter:
                 condition = scanned[1:-1]
                 attribs["condition"] = condition
                 scanned = ""
@@ -395,7 +403,7 @@ def repeat_item_parser(raw_text: str) -> tuple[str, None] | tuple[str, Token]:
     check_stage = 0
     scanned = ""
     found_code_block = False
-    found_bracket = False
+    found_condition = False
     curly_bracket_counter = 0
     bracket_counter = 0
     while index < len(raw_text):
@@ -406,10 +414,10 @@ def repeat_item_parser(raw_text: str) -> tuple[str, None] | tuple[str, Token]:
         if check_stage == 0:
             if scanned.endswith("("):
                 bracket_counter += 1
-                found_bracket = True
+                found_condition = True
             if scanned.endswith(")"):
                 bracket_counter -= 1
-            if found_bracket and not bracket_counter:
+            if found_condition and not bracket_counter:
                 condition = scanned[1:-1]
                 iterator, iterable = condition.split(":=:")
                 iterator_parts = iterator.rsplit(">", 1)
