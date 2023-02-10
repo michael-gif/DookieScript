@@ -361,7 +361,6 @@ def repeat_query_parser(raw_text: str) -> tuple[str, None] | tuple[str, Token]:
                 found_condition = True
             if scanned.endswith(")"):
                 bracket_counter -= 1
-                found_condition = False
             if found_condition and not bracket_counter:
                 condition = scanned[1:-1]
                 attribs["condition"] = condition
@@ -484,7 +483,7 @@ def value_parser(raw_text: str) -> Token:
         return token
     if raw_text in ["true", "false"]:
         token = Token("boolean")
-        token.attributes["value"] = raw_text
+        token.attributes["value"] = raw_text.capitalize()
         return token
     if raw_text.startswith("call "):
         text, token = call_parser(raw_text)
