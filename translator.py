@@ -21,7 +21,7 @@ def translate_to_python(tokens: List[Token], destination: str) -> None:
             f.write(line + "\n")
     print("[INFO] Executing python code\n")
     subprocess.call(["python", "-m", destination[:-3]], shell=True)
-    os.remove(destination)
+    #os.remove(destination)
 
 
 def convert_token(token: Token) -> list:
@@ -39,6 +39,7 @@ def convert_token(token: Token) -> list:
         'call': convert_call,
         'repeat': convert_for,
         'repeat_query': convert_while,
+        'repeat_item': convert_foreach,
         'query': convert_query,
         'return': convert_return
     }
@@ -140,12 +141,29 @@ def convert_call(token: Token) -> list[str]:
 
 
 def convert_for(token: Token) -> list[str]:
+    """
+    | Convert for loop into python syntax
+    :param token:
+    :return:
+    """
     values = token.attributes["start_stop_step"]
     if values[3] == "++":
         values[3] = 1
     if values[3] == "--":
         values[3] = -1
     lines = [f"for {values[0]} in range({values[1]}, {values[2]}, {values[3]}):"]
+    for t in token.attributes["code_block"]:
+        lines += ["    " + line for line in convert_token(t)]
+    return lines
+
+
+def convert_foreach(token: Token) -> list[str]:
+    """
+    | Convert foreach into python syntax
+    :param token:
+    :return:
+    """
+    lines = ["for " + token.attributes["iterator"] + " in " + token.attributes["iterable"] + ":"]
     for t in token.attributes["code_block"]:
         lines += ["    " + line for line in convert_token(t)]
     return lines

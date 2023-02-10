@@ -269,12 +269,6 @@ def repeat_parser(raw_text: str) -> tuple[str, None] | tuple[str, Token]:
     else:
         return "", None
 
-    if raw_text.startswith("query "):
-        text, token = repeat_query_parser("repeat " + raw_text)
-        return text, token
-
-    # TODO: write the code to parse a for-in statement
-
     token = Token("repeat")
     attribs = {}
     index = 0
@@ -319,8 +313,8 @@ def repeat_query_parser(raw_text: str) -> tuple[str, None] | tuple[str, Token]:
     :param raw_text:
     :return:
     """
-    if raw_text.lstrip().startswith("repeat query "):
-        raw_text = raw_text.lstrip().split("query ", 1)[1]
+    if raw_text.lstrip().startswith("repeat:query "):
+        raw_text = raw_text.lstrip().split("repeat:query ", 1)[1]
     else:
         return "", None
     token = Token("repeat_query")
@@ -328,7 +322,7 @@ def repeat_query_parser(raw_text: str) -> tuple[str, None] | tuple[str, Token]:
     index = 0
     scanned = ""
     found_code_block = False
-    bracket_counter = 0
+    curly_bracket_counter = 0
     check_stage = 0
     while index < len(raw_text):
         char = raw_text[index]
@@ -348,16 +342,85 @@ def repeat_query_parser(raw_text: str) -> tuple[str, None] | tuple[str, Token]:
                 if not found_code_block and scanned[:-1].strip() != "executes":
                     logging.error(f"missing keyword executes\nhere --> {scanned}")
                     quit()
-                bracket_counter += 1
+                curly_bracket_counter += 1
                 found_code_block = True
             if scanned.endswith("}"):
-                bracket_counter -= 1
-            if found_code_block and not bracket_counter:
+                curly_bracket_counter -= 1
+            if found_code_block and not curly_bracket_counter:
                 code_block = scanned[:-1]
                 attribs["code_block"] = code_block
                 break
             index += 1
             continue
+        index += 1
+
+    attribs["code_block"] = tokenize(attribs["code_block"])
+    token.attributes = attribs
+    remaining_text = raw_text[index + 1:]
+    return remaining_text, token
+
+
+def repeat_item_parser(raw_text: str) -> tuple[str, None] | tuple[str, Token]:
+    """
+    | Parses for each loops
+    :param raw_text:
+    :return:
+    """
+    if raw_text.lstrip().startswith("repeat:item "):
+        raw_text = raw_text.lstrip().split("repeat:item ", 1)[1]
+    else:
+        return "", None
+    token = Token("repeat_item")
+    attribs = {}
+    index = 0
+    check_stage = 0
+    scanned = ""
+    found_code_block = False
+    curly_bracket_counter = 0
+    while index < len(raw_text):
+        char = raw_text[index]
+        scanned += char
+        scanned = scanned.lstrip()
+
+        if check_stage == 0:
+            if scanned.startswith("(") and scanned.endswith(")"):
+                condition = scanned[1:-1]
+                iterator, iterable = condition.split(":=:")
+                iterator_parts = iterator.rsplit(">", 1)
+                iterator_datatype = iterator_parts[0].strip() + ">"
+                iterator_name = iterator_parts[1].strip()
+                if iterator_datatype == ">":
+                    logging.error(f"expected datatype, instead got nothing\nhere -->{scanned}")
+                    quit()
+                if not isValidType(iterator_datatype):
+                    logging.error(f"unknown datatype: {iterator_datatype}")
+                    quit()
+                if not iterator_name:
+                    logging.error(f"expected iterator name after datatype {iterator_datatype}, instead got nothing\nhere -->{scanned}")
+                    quit()
+                attribs["iterator"] = iterator_name
+                attribs["iterable"] = iterable.strip()
+                scanned = ""
+                check_stage += 1
+            index += 1
+            continue
+
+        if check_stage == 1:
+            if scanned.endswith("{"):
+                if not found_code_block and scanned[:-1].strip() != "executes":
+                    logging.error(f"missing keyword executes\nhere --> {scanned}")
+                    quit()
+                curly_bracket_counter += 1
+                found_code_block = True
+            if scanned.endswith("}"):
+                curly_bracket_counter -= 1
+            if found_code_block and not curly_bracket_counter:
+                code_block = scanned[:-1]
+                attribs["code_block"] = code_block
+                break
+            index += 1
+            continue
+
         index += 1
 
     attribs["code_block"] = tokenize(attribs["code_block"])
@@ -594,6 +657,8 @@ def tokenize(content: str) -> list[Token]:
         'container': container_parser,
         'multipart': multipart_parser,
         'repeat ': repeat_parser,
+        'repeat:query': repeat_query_parser,
+        'repeat:item': repeat_item_parser,
         'query ': query_parser,
         'return ': return_parser
     }
