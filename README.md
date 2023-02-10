@@ -84,12 +84,12 @@ repeat (<int> start = 0, <int> stop = 10, start++) {
 }
 
 // for-each loop. not implemented yet
-repeat (<datatype> element :=: iterable) {
+repeat:item (<datatype> element :=: iterable) {
     // logic
 }
 
 // while loop
-repeat query (condition) executes {
+repeat:item (condition) executes {
     // logic
 }
 ```
