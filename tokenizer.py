@@ -395,14 +395,21 @@ def repeat_item_parser(raw_text: str) -> tuple[str, None] | tuple[str, Token]:
     check_stage = 0
     scanned = ""
     found_code_block = False
+    found_bracket = False
     curly_bracket_counter = 0
+    bracket_counter = 0
     while index < len(raw_text):
         char = raw_text[index]
         scanned += char
         scanned = scanned.lstrip()
 
         if check_stage == 0:
-            if scanned.startswith("(") and scanned.endswith(")"):
+            if scanned.endswith("("):
+                bracket_counter += 1
+                found_bracket = True
+            if scanned.endswith(")"):
+                bracket_counter -= 1
+            if found_bracket and not bracket_counter:
                 condition = scanned[1:-1]
                 iterator, iterable = condition.split(":=:")
                 iterator_parts = iterator.rsplit(">", 1)
@@ -419,6 +426,7 @@ def repeat_item_parser(raw_text: str) -> tuple[str, None] | tuple[str, Token]:
                     quit()
                 attribs["iterator"] = iterator_name
                 attribs["iterable"] = iterable.strip()
+                print(iterator_name, iterable.strip())
                 scanned = ""
                 check_stage += 1
             index += 1
@@ -471,10 +479,15 @@ def value_parser(raw_text: str) -> Token:
         token.attributes["value"] = raw_text
         return token
     except ValueError:
-        float(raw_text)
-        token = Token("float")
-        token.attributes["value"] = raw_text
-        return token
+        try:
+            float(raw_text)
+            token = Token("float")
+            token.attributes["value"] = raw_text
+            return token
+        except ValueError:
+            token = Token("string")
+            token.attributes["value"] = raw_text
+            return token
 
 
 def container_parser(raw_text: str) -> tuple[str, None] | tuple[str, Token]:
