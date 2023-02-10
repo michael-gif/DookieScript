@@ -441,7 +441,6 @@ def repeat_item_parser(raw_text: str) -> tuple[str, None] | tuple[str, Token]:
                     quit()
                 attribs["iterator"] = iterator_name
                 attribs["iterable"] = iterable.strip()
-                print(iterator_name, iterable.strip())
                 scanned = ""
                 check_stage += 1
             index += 1
