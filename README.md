@@ -3,12 +3,13 @@ Slightly annoying programming language
 
 **Comparison with Python**
 
-|                   | Python  | DookieScript |
-|-------------------|---------|--------------|
-| Readability       | Good    | Meh          |
-| Speed             | Fast    | Fast         |
-| Static or dynamic | Dynamic | Static       |
-| Beginner friendly | Yes     | No           |
+|                                   | Python  | DookieScript |
+| --------------------------------- | ------- | ------------ |
+| Readability                       | Good    | Meh          |
+| Speed                             | Fast    | Fast         |
+| Static or dynamic                 | Dynamic | Static       |
+| Beginner friendly                 | Yes     | No           |
+| Supports python modules/libraries | Yes     | Yes          |
 
 ### Available datatypes
 | type    | dks type    |
@@ -93,12 +94,12 @@ query (condition) executes {
 Loops
 ```
 // for loop. only supports ++ and --
-repeat (<int> start = 0, <int> stop = 10, start++) {
+repeat (<int> start = 0, <int> stop = 10, start++) executes {
     // logic
 }
 
-// for-each loop. not implemented yet
-repeat:item (<datatype> element :=: iterable) {
+// for-each loop
+repeat:item (<datatype> element :=: iterable) executes {
     // logic
 }
 
@@ -193,7 +194,5 @@ call main()
 Then run the DookieScript compiler `dksc.py`, passing the script file to `-dks <path>`:  
 `python -m dksc -dks numbergame.dks`
 
-You can specify an output file with `-out <path>` or `--out_file <path>`:  
+You can specify an optional output file with `-out <path>` or `--out_file <path>`:  
 `python -m dksc -dks numbergame.dks -out poop.py`
-
-The dookie file will be tokenized, converted to python, and run.
