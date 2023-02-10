@@ -5,8 +5,9 @@ Slightly annoying programming language
 - int `<int>`
 - float `<float>`
 - string `<string>`
-- boolean `<boolean>`
+- boolean `<boolean>` -> `true` | `false`
 - void `<void>`
+- generic/unknown `<?>`
 
 ### Available datastructures
 - array
