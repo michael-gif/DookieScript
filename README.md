@@ -136,7 +136,7 @@ this is a multiline comment
 ```
 
 ## Usage
-Write your doodoo file, saving it with `.dks` as the extension. Example:
+Write your dookie file, saving it with `.dks` as the extension. Example:
 
 `numbergame.dks`
 ```
