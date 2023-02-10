@@ -1,13 +1,24 @@
 # DookieScript
 Slightly annoying programming language
 
+**Comparison with Python**
+
+|                   | Python  | DookieScript |
+|-------------------|---------|--------------|
+| Readability       | Good    | Meh          |
+| Speed             | Fast    | Fast         |
+| Static or dynamic | Dynamic | Static       |
+| Beginner friendly | Yes     | No           |
+
 ### Available datatypes
-- int `<int>`
-- float `<float>`
-- string `<string>`
-- boolean `<boolean>` -> `true` | `false`
-- void `<void>`
-- generic/unknown `<?>`
+| type    | dks type    |
+| ------- | ----------- |
+| int     | `<int>`     |
+| float   | `<float>`   |
+| string  | `<string>`  |
+| boolean | `<boolean>` |
+| null    | `<void>`    |
+| unknown | `<?>`       |
 
 ### Available datastructures
 - array
@@ -16,13 +27,15 @@ Slightly annoying programming language
 - hashmap (not implemented)
 
 ### Operators
-- add/concat -> `+`
-- subtract -> `-`
-- multiply -> `*`
-- divide -> `/`
-- remainder -> `//`
-- modulo -> `%`
-- shorthand input -> `<<`
+| operator        | dks operator |
+| --------------- | ------------ |
+| add/concat      | `+`          |
+| subtract        | `-`          |
+| multiply        | `*`          |
+| divide          | `/`          |
+| remainder       | `//`         |
+| modulo          | `%`          |
+| shorthand input | `<<`         |
 
 ### Language syntax
 Imports
