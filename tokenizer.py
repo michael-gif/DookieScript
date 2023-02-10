@@ -275,7 +275,9 @@ def repeat_parser(raw_text: str) -> tuple[str, None] | tuple[str, Token]:
     index = 0
     scanned = ""
     found_code_block = False
+    found_condition = False
     curly_bracket_counter = 0
+    bracket_counter = 0
     check_stage = 0
     while index < len(raw_text):
         char = raw_text[index]
@@ -285,7 +287,13 @@ def repeat_parser(raw_text: str) -> tuple[str, None] | tuple[str, Token]:
             if scanned[0] != "(":
                 logging.error(f"expected open bracket, instead got: {scanned[0]}\nhere --> " + raw_text.split('\n', 1)[0])
                 quit()
-            if scanned.startswith("(") and scanned.endswith(")") and "start_stop_step" not in attribs:
+            if scanned.endswith("("):
+                bracket_counter += 1
+                found_condition = True
+            if scanned.endswith(")"):
+                bracket_counter -= 1
+                found_condition = False
+            if found_condition and not bracket_counter:
                 start_stop_step = scanned[:-1]
                 parts = [p.strip() for p in start_stop_step.split(",")]
                 start = parts[0].split(">")[1].strip()
