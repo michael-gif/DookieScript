@@ -233,18 +233,19 @@ def query_parser(raw_text: str) -> tuple[str, None] | tuple[str, Token]:
             condition = scanned[1:-1]
             attribs["condition"] = condition
             scanned = ""
-        if scanned.endswith("executes {"):
-            scanned = ""
-            found_code_block = True
-            curly_bracket_counter += 1
         if scanned.endswith("{"):
+            if not found_code_block:
+                if scanned[:-1].strip() != "executes":
+                    logging.error(f"missing keyword executes\nhere --> {scanned}")
+                    quit()
+                scanned = ""
             curly_bracket_counter += 1
+            found_code_block = True
         if scanned.endswith("}"):
             curly_bracket_counter -= 1
         if found_code_block and not curly_bracket_counter:
             code_block = scanned[:-1]
             attribs["code_block"] = code_block
-            scanned = ""
             break
         index += 1
 
