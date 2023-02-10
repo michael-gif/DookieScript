@@ -274,31 +274,47 @@ def repeat_parser(raw_text: str) -> tuple[str, None] | tuple[str, Token]:
     index = 0
     scanned = ""
     found_code_block = False
-    bracket_counter = 0
+    curly_bracket_counter = 0
+    check_stage = 0
     while index < len(raw_text):
         char = raw_text[index]
         scanned += char
         scanned = scanned.lstrip()
-        if scanned.startswith("(") and scanned.endswith(")") and "start_stop_step" not in attribs:
-            start_stop_step = scanned[:-1]
-            parts = [p.strip() for p in start_stop_step.split(",")]
-            start = parts[0].split(">")[1].strip()
-            stop = parts[1].split(">")[1].strip()
-            step = parts[2]
-            iterator_name, iterator_start_value = [i.strip() for i in start.split("=")]
-            iterator_stop_value = stop.split("=")[1].strip()
-            iterator_step_value = step.split(iterator_name)[1].strip()
-            attribs["start_stop_step"] = [iterator_name, iterator_start_value, iterator_stop_value, iterator_step_value]
-            scanned = ""
-        if scanned.endswith("{"):
-            bracket_counter += 1
-            found_code_block = True
-        if scanned.endswith("}"):
-            bracket_counter -= 1
-        if found_code_block and not bracket_counter:
-            code_block = scanned[:-1]
-            attribs["code_block"] = code_block
-            break
+        if check_stage == 0:
+            if scanned[0] != "(":
+                logging.error(f"expected open bracket, instead got: {scanned[0]}\nhere --> " + raw_text.split('\n', 1)[0])
+                quit()
+            if scanned.startswith("(") and scanned.endswith(")") and "start_stop_step" not in attribs:
+                start_stop_step = scanned[:-1]
+                parts = [p.strip() for p in start_stop_step.split(",")]
+                start = parts[0].split(">")[1].strip()
+                stop = parts[1].split(">")[1].strip()
+                step = parts[2]
+                iterator_name, iterator_start_value = [i.strip() for i in start.split("=")]
+                iterator_stop_value = stop.split("=")[1].strip()
+                iterator_step_value = step.split(iterator_name)[1].strip()
+                attribs["start_stop_step"] = [iterator_name, iterator_start_value, iterator_stop_value, iterator_step_value]
+                scanned = ""
+                check_stage += 1
+            index += 1
+            continue
+        if check_stage == 1:
+            if scanned.endswith("{"):
+                if not found_code_block:
+                    if scanned[:-1].strip() != "executes":
+                        logging.error(f"missing keyword executes\nhere --> {scanned}")
+                        quit()
+                    scanned = ""
+                curly_bracket_counter += 1
+                found_code_block = True
+            if scanned.endswith("}"):
+                curly_bracket_counter -= 1
+            if found_code_block and not curly_bracket_counter:
+                code_block = scanned[:-1]
+                attribs["code_block"] = code_block
+                break
+            index += 1
+            continue
         index += 1
 
     attribs["code_block"] = tokenize(attribs["code_block"])
@@ -339,9 +355,11 @@ def repeat_query_parser(raw_text: str) -> tuple[str, None] | tuple[str, Token]:
 
         if check_stage == 1:
             if scanned.endswith("{"):
-                if not found_code_block and scanned[:-1].strip() != "executes":
-                    logging.error(f"missing keyword executes\nhere --> {scanned}")
-                    quit()
+                if not found_code_block:
+                    if scanned[:-1].strip() != "executes":
+                        logging.error(f"missing keyword executes\nhere --> {scanned}")
+                        quit()
+                    scanned = ""
                 curly_bracket_counter += 1
                 found_code_block = True
             if scanned.endswith("}"):
